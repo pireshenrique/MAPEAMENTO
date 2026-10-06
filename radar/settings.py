@@ -68,6 +68,25 @@ class AIConfig(_Strict):
     min_match_confidence: float = 0.6
 
 
+class HttpConfig(_Strict):
+    user_agent: str = "CompetitiveIntelligenceRadar/0.1 (monitoramento competitivo interno)"
+    respect_robots: bool = True
+    min_delay_seconds: float = Field(1.0, ge=0)       # intervalo mínimo entre requisições ao mesmo host
+    timeout_seconds: float = 20
+    robots_ttl_seconds: int = 3600
+
+
+class SourceQualityConfig(_Strict):
+    """Critérios objetivos (Fase 10, seção J) para avaliar uma fonte."""
+
+    min_availability: float = 0.95
+    max_median_lag_hours: float = 6
+    min_matched_per_week_general: float = 3
+    min_matched_per_week_official: float = 1
+    min_body_rate: float = 0.7
+    sample_size: int = 30
+
+
 class UIConfig(_Strict):
     page_size: int = 25
     min_chart_sample: int = 10
@@ -80,6 +99,8 @@ class AppSettings(_Strict):
     matching: MatchingConfig = MatchingConfig()
     dedup: DedupConfig = DedupConfig()
     ai: AIConfig
+    http: HttpConfig = HttpConfig()
+    source_quality: SourceQualityConfig = SourceQualityConfig()
     ui: UIConfig = UIConfig()
 
 
@@ -114,6 +135,29 @@ class CompetitorConfig(_Strict):
         return self
 
 
+class SourceConfig(_Strict):
+    """Uma fonte de notícias. `scope`: per_competitor (busca por empresa) ou feed (lista tudo; match global)."""
+
+    id: str
+    type: Literal["newsapi", "rss", "cvm_ipe"]
+    url: str | None = None
+    enabled: bool = False
+    tier: int = Field(2, ge=1, le=3)               # 1 = primária/oficial, 2 = especializada, 3 = geral
+    scope: Literal["per_competitor", "feed"] | None = None
+    competitor_hint: str | None = None             # fonte dedicada a um concorrente (informativo)
+    verified: bool = False                         # URL confirmada pela descoberta (Fase 10.1)
+    notes: str = ""
+    options: dict = {}                             # opções específicas do tipo (ex.: cnpj, company_name)
+
+    @model_validator(mode="after")
+    def _defaults(self) -> "SourceConfig":
+        if self.scope is None:
+            self.scope = "per_competitor" if self.type == "newsapi" else "feed"
+        if self.type in ("rss", "cvm_ipe") and not self.url:
+            raise ValueError(f"fonte {self.id}: 'url' é obrigatória para o tipo {self.type}")
+        return self
+
+
 class CategoryConfig(_Strict):
     name: str
     description: str = ""
@@ -140,6 +184,7 @@ class AppConfig(BaseModel):
     competitors: list[CompetitorConfig]
     categories: list[CategoryConfig]
     profile: CompanyProfile
+    sources: list[SourceConfig] = []
 
     def competitor(self, name: str) -> CompetitorConfig:
         for c in self.competitors:
@@ -182,7 +227,15 @@ def load_config(config_dir: Path | str | None = None, env: EnvSettings | None = 
         raise ValueError("categories.yaml: categorias duplicadas")
 
     profile = CompanyProfile.model_validate(_read_yaml(base / "company_profile.yaml").get("company", {}))
-    return AppConfig(env=env, settings=settings, competitors=competitors, categories=cats, profile=profile)
+    sources: list[SourceConfig] = []
+    src_path = base / "sources.yaml"
+    if src_path.exists():
+        sources = [SourceConfig.model_validate(x) for x in _read_yaml(src_path).get("sources", [])]
+        ids = [x.id for x in sources]
+        if len(ids) != len(set(ids)):
+            raise ValueError("sources.yaml: ids de fontes duplicados")
+    return AppConfig(env=env, settings=settings, competitors=competitors, categories=cats, profile=profile,
+                     sources=sources)
 
 
 @lru_cache

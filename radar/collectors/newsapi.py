@@ -30,6 +30,8 @@ def _parse_dt(value: str | None) -> datetime | None:
 
 class NewsApiCollector:
     name = "newsapi"
+    scope = "per_competitor"
+    source_id = "newsapi"
 
     def __init__(self, api_key: str, cfg: CollectionConfig, strategy: QueryStrategy | None = None,
                  client: httpx.Client | None = None, sleep: Callable[[float], None] = time.sleep):
@@ -95,7 +97,7 @@ class NewsApiCollector:
     def _parse(self, item: dict, query: str) -> RawArticle:
         src = item.get("source") or {}
         return RawArticle(
-            source_collector=self.name,
+            source_collector=self.name, source_id=self.source_id, source_type="newsapi",
             external_id=None,  # a News API não fornece ID estável
             title=item.get("title"), description=item.get("description"), url=item.get("url"),
             source_name=src.get("name"), author=item.get("author"),

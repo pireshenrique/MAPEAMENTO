@@ -8,8 +8,8 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from radar.domain.models import AnalysisStatus, Article, DupStatus
-from radar.db.tables import Category, CollectionRun, Competitor, News, NewsAnalysis, utcnow
-from radar.settings import CategoryConfig, CompetitorConfig
+from radar.db.tables import Category, CollectionRun, Competitor, News, NewsAnalysis, Source, utcnow
+from radar.settings import CategoryConfig, CompetitorConfig, SourceConfig
 
 
 class CompetitorRepository:
@@ -85,6 +85,8 @@ class NewsRepository:
             author=article.author, published_at=article.published_at, image_url=article.image_url,
             raw_content=article.raw_content, match_confidence=article.match_confidence,
             match_evidence=article.match_evidence, collected_at=article.collected_at,
+            source_id=article.source_id, source_type=article.source_type, body_status=article.body_status,
+            tags=article.tags, canonical_url=article.canonical_url,
             dup_status=dup_status.value, dup_of_id=dup_of_id, dup_score=dup_score,
             # duplicatas certas não consomem IA
             analysis_status=(AnalysisStatus.SKIPPED if dup_status == DupStatus.DUPLICATE
@@ -171,3 +173,53 @@ class RunRepository:
         return self.s.scalar(select(CollectionRun).where(CollectionRun.kind == kind,
                                                          CollectionRun.finished_at.is_not(None))
                              .order_by(CollectionRun.id.desc()).limit(1))
+
+
+class SourceRepository:
+    def __init__(self, s: Session):
+        self.s = s
+
+    def sync(self, configs: Sequence[SourceConfig]) -> dict[str, Source]:
+        """Upsert por source_id (sources.yaml é a fonte de verdade; métricas são preservadas)."""
+        existing = {r.source_id: r for r in self.s.scalars(select(Source))}
+        ids = set()
+        for cfg in configs:
+            ids.add(cfg.id)
+            row = existing.get(cfg.id)
+            if row is None:
+                row = Source(source_id=cfg.id, type=cfg.type)
+                self.s.add(row)
+                existing[cfg.id] = row
+            row.type, row.url, row.enabled, row.tier = cfg.type, cfg.url or "", cfg.enabled, cfg.tier
+        for sid, row in existing.items():
+            if sid not in ids:
+                row.enabled = False
+        self.s.flush()
+        return existing
+
+    def get(self, source_id: str) -> Source | None:
+        return self.s.scalar(select(Source).where(Source.source_id == source_id))
+
+    def list(self) -> list[Source]:
+        return list(self.s.scalars(select(Source).order_by(Source.tier, Source.source_id)))
+
+    def record_fetch(self, source_id: str, *, ok: bool, status: str, error: str | None = None,
+                     etag: str | None = None, last_modified: str | None = None, now: datetime | None = None) -> None:
+        row = self.get(source_id)
+        if row is None:
+            return
+        now = now or utcnow()
+        row.last_fetch_at, row.last_status = now, status
+        if ok:
+            row.fetches_ok += 1; row.consecutive_failures = 0; row.last_success_at = now; row.last_error = None
+            if etag is not None or last_modified is not None:
+                row.etag, row.last_modified = etag, last_modified
+        else:
+            row.fetches_failed += 1; row.consecutive_failures += 1; row.last_error = (error or "")[:500]
+        self.s.flush()
+
+    def add_counts(self, source_id: str, *, seen: int = 0, matched: int = 0, stored: int = 0) -> None:
+        row = self.get(source_id)
+        if row:
+            row.items_seen += seen; row.items_matched += matched; row.items_stored += stored
+            self.s.flush()

@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from radar.db.engine import make_engine, make_session_factory, session_scope
 from radar.db.migrate import upgrade_to_head
-from radar.db.repositories import CategoryRepository, CompetitorRepository
+from radar.db.repositories import CategoryRepository, CompetitorRepository, SourceRepository
 from radar.settings import AppConfig
 
 
@@ -27,4 +27,5 @@ def build_context(cfg: AppConfig) -> Context:
     with session_scope(factory) as s:  # YAML é a fonte de verdade de concorrentes e categorias
         CompetitorRepository(s).sync(cfg.competitors)
         CategoryRepository(s).sync(cfg.categories)
+        SourceRepository(s).sync(cfg.sources)
     return Context(cfg, engine, factory)

@@ -37,6 +37,16 @@ httpx, rapidfuzz, Typer, pytest.
 - **Sem JS próprio e sem segredos no navegador.** Texto externo é escapado; URLs que não sejam http(s) são neutralizadas.
 - **Gráficos honestos:** a página *Inteligência* só renderiza um gráfico quando a amostra ≥ `ui.min_chart_sample`.
 
+## Fontes (Fase 10)
+
+As fontes ficam em `config/sources.yaml` (tipos: `rss`, `cvm_ipe`, `newsapi`). Todas as candidatas vêm **desabilitadas e não
+verificadas**; habilite uma depois de confirmar a URL (`radar sources discover`) e avaliá-la (`radar sources report`).
+- `scope: feed` (RSS, CVM): uma chamada por fonte; o MATCH testa cada item contra todos os concorrentes.
+  `scope: per_competitor` (News API): uma chamada por concorrente. A News API é opcional e fica desligada por padrão.
+- Requisições a terceiros: User-Agent identificado, `robots.txt`, intervalo por host, cache condicional (ETag/If-Modified-Since).
+- O corpo completo (quando a fonte o fornece, ex.: `content:encoded`) é gravado em `news.raw_content`, com `body_status`.
+- `radar sources list | report [--sample arquivo.csv] | discover`. Critérios de qualidade em `settings.yaml` (`source_quality`).
+
 ## Instalação
 
 ```bash

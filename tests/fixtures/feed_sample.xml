@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
+<channel><title>Portal Fictício de Negócios</title><link>https://portal-ficticio.example/</link><description>fixture</description>
+<item><title>Docol lança nova linha de metais sanitários para banheiros</title><link>https://portal-ficticio.example/docol-linha?utm_source=rss</link>
+<guid isPermaLink="false">guid-001</guid><pubDate>Mon, 05 Oct 2026 10:00:00 GMT</pubDate><category>Indústria</category><category>Lançamentos</category>
+<description>&lt;p&gt;A Docol apresentou uma nova linha.&lt;/p&gt;</description>
+<content:encoded><![CDATA[<p>A Docol apresentou uma nova linha de metais sanitários para banheiros residenciais.</p><p>Texto completo da matéria fictícia com mais detalhes sobre o lançamento.</p>]]></content:encoded>
+<media:content url="https://portal-ficticio.example/img/docol.jpg" medium="image"/></item>
+<item><title>Tigre vence campeonato regional e garante vaga na final do torneio</title><link>https://portal-ficticio.example/tigre-futebol</link>
+<guid isPermaLink="false">guid-002</guid><pubDate>Mon, 05 Oct 2026 09:00:00 GMT</pubDate><description>Time de futebol venceu o jogo no campeonato.</description></item>
+<item><title>Notícia antiga sobre a Roca e louças sanitárias no setor</title><link>https://portal-ficticio.example/roca-antiga</link>
+<guid isPermaLink="false">guid-003</guid><pubDate>Mon, 01 Sep 2026 09:00:00 GMT</pubDate><description>Roca amplia louças sanitárias.</description></item>
+</channel></rss>

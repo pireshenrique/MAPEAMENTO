@@ -81,6 +81,11 @@ class News(Base):
     raw_content: Mapped[str | None] = mapped_column(Text)
     match_confidence: Mapped[float] = mapped_column(Float, default=1.0)
     match_evidence: Mapped[list] = mapped_column(JSON, default=list)
+    source_id: Mapped[str | None] = mapped_column(String(80))
+    source_type: Mapped[str | None] = mapped_column(String(30))
+    body_status: Mapped[str] = mapped_column(String(12), default="none")
+    tags: Mapped[list] = mapped_column(JSON, default=list)
+    canonical_url: Mapped[str | None] = mapped_column(Text)
     dup_status: Mapped[str] = mapped_column(String(20), default="unique")
     dup_of_id: Mapped[int | None] = mapped_column(ForeignKey("news.id"))
     dup_score: Mapped[float | None] = mapped_column(Float)
@@ -112,6 +117,31 @@ class NewsAnalysis(Base):
     raw_response: Mapped[str | None] = mapped_column(Text)
 
     news: Mapped[News] = relationship(back_populates="analysis")
+
+
+class Source(Base):
+    """Estado e métricas operacionais de cada fonte configurada em sources.yaml."""
+
+    __tablename__ = "sources"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    source_id: Mapped[str] = mapped_column(String(80), unique=True)
+    type: Mapped[str] = mapped_column(String(30))
+    url: Mapped[str] = mapped_column(Text, default="")
+    enabled: Mapped[bool] = mapped_column(Boolean, default=False)
+    tier: Mapped[int] = mapped_column(Integer, default=2)
+    etag: Mapped[str | None] = mapped_column(String(255))
+    last_modified: Mapped[str | None] = mapped_column(String(80))
+    last_fetch_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
+    last_success_at: Mapped[datetime | None] = mapped_column(UTCDateTime)
+    last_status: Mapped[str | None] = mapped_column(String(40))
+    last_error: Mapped[str | None] = mapped_column(Text)
+    consecutive_failures: Mapped[int] = mapped_column(Integer, default=0)
+    fetches_ok: Mapped[int] = mapped_column(Integer, default=0)
+    fetches_failed: Mapped[int] = mapped_column(Integer, default=0)
+    items_seen: Mapped[int] = mapped_column(Integer, default=0)
+    items_matched: Mapped[int] = mapped_column(Integer, default=0)
+    items_stored: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(UTCDateTime, default=utcnow)
 
 
 class CollectionRun(Base):

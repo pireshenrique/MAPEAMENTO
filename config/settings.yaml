@@ -29,3 +29,16 @@ ui:
   page_size: 25
   min_chart_sample: 10      # amostra mínima para exibir gráficos (evita gráficos enganosos)
   timezone: America/Sao_Paulo
+http:                       # política de requisições a sites de terceiros
+  user_agent: "CompetitiveIntelligenceRadar/0.1 (monitoramento competitivo interno)"
+  respect_robots: true
+  min_delay_seconds: 1.0    # por host
+  timeout_seconds: 20
+  robots_ttl_seconds: 3600
+source_quality:             # critérios objetivos para aceitar uma fonte (radar sources report)
+  min_availability: 0.95
+  max_median_lag_hours: 6
+  min_matched_per_week_general: 3     # fontes tier 3
+  min_matched_per_week_official: 1    # fontes tier 1-2
+  min_body_rate: 0.7
+  sample_size: 30                     # itens exportados para auditoria manual de precisão (meta: >= 80%)

@@ -11,7 +11,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from radar.collectors.base import CollectorError, SourceCollector
-from radar.db.repositories import CompetitorRepository, NewsRepository, RunRepository
+from radar.db.repositories import CompetitorRepository, NewsRepository, RunRepository, SourceRepository
 from radar.dedup.service import Action, Deduplicator
 from radar.domain.models import Article, DupStatus
 from radar.pipeline.match import match_all
@@ -31,6 +31,7 @@ class CollectStats:
     possible_duplicates: int = 0
     discarded: Counter = field(default_factory=Counter)  # motivo -> quantidade
     errors: list[str] = field(default_factory=list)
+    by_source: dict = field(default_factory=dict)   # source_id -> {seen, matched, stored}
 
     @property
     def discarded_total(self) -> int:
@@ -57,7 +58,7 @@ def run_collection(session: Session, collectors: Sequence[SourceCollector], cfg:
     session.commit()
     log.info("coleta iniciada: fontes=%s desde=%s", run.source or "(nenhuma)", since.isoformat())
     if not collectors:
-        stats.errors.append("nenhuma fonte configurada (defina NEWS_API_KEY)")
+        stats.errors.append("nenhuma fonte habilitada (veja config/sources.yaml)")
         log.error(stats.errors[-1])
 
     comp_rows = {c.name: c for c in CompetitorRepository(session).list(only_active=True)}
@@ -65,28 +66,46 @@ def run_collection(session: Session, collectors: Sequence[SourceCollector], cfg:
     repo = NewsRepository(session)
     dedup = Deduplicator(repo, cfg.settings.dedup)
 
+    srepo = SourceRepository(session)
     for collector in collectors:
-        for comp in active_cfgs:
+        sid = getattr(collector, "source_id", None) or collector.name
+        row = srepo.get(sid) if hasattr(collector, "load_state") else None
+        if row is not None:
+            collector.load_state(row.etag, row.last_modified)   # cache condicional (ETag / If-Modified-Since)
+        targets = [None] if getattr(collector, "scope", "per_competitor") == "feed" else active_cfgs
+        for comp in targets:
+            label = f"{sid}/{comp.name if comp else 'feed'}"
             try:
                 raws = collector.fetch(comp, since, now)
             except CollectorError as e:
-                msg = f"{collector.name}/{comp.name}: {e}"
+                msg = f"{label}: {e}"
                 log.error("erro de coleta: %s", msg)
                 stats.errors.append(msg)
+                srepo.record_fetch(sid, ok=False, status=e.code or "error", error=str(e), now=now)
+                session.commit()
                 if e.code in _FATAL_CODES:
-                    log.error("erro fatal de credencial/cota em %s; interrompendo a fonte", collector.name)
+                    log.error("erro fatal de credencial/cota em %s; interrompendo a fonte", sid)
                     break
                 continue
+            state = getattr(collector, "last_status", "ok")
+            srepo.record_fetch(sid, ok=True, status=state, etag=getattr(collector, "etag", None),
+                               last_modified=getattr(collector, "last_modified", None), now=now)
             stats.found += len(raws)
             for raw in raws:
+                key = raw.source_id or sid
+                bucket = stats.by_source.setdefault(key, {"seen": 0, "matched": 0, "stored": 0})
+                bucket["seen"] += 1
                 try:
-                    _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats)
+                    _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats, bucket)
                 except Exception as e:  # um artigo problemático não derruba o lote
                     session.rollback()
                     msg = f"erro ao processar artigo '{(raw.title or '')[:60]}': {type(e).__name__}: {e}"
                     log.exception(msg)
                     stats.errors.append(msg)
             session.commit()
+    for key, b in stats.by_source.items():
+        srepo.add_counts(key, seen=b["seen"], matched=b["matched"], stored=b["stored"])
+    session.commit()
 
     run = session.get(type(run), run.id)
     run.found, run.new, run.duplicates = stats.found, stats.new, stats.duplicates + stats.possible_duplicates
@@ -100,7 +119,7 @@ def run_collection(session: Session, collectors: Sequence[SourceCollector], cfg:
     return stats
 
 
-def _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats) -> None:  # noqa: ANN001
+def _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats, bucket) -> None:  # noqa: ANN001
     n = normalize(raw, now)
     if (reason := validate(n, now, cfg.settings.validation, cfg.settings.collection)):
         stats.discarded[reason] += 1
@@ -109,6 +128,7 @@ def _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats)
     if not matches:
         stats.discarded["sem_concorrente"] += 1
         return
+    bucket["matched"] += 1
     for m in matches:
         article = Article(**n.model_dump(), competitor_name=m.competitor,
                           match_confidence=m.confidence, match_evidence=m.evidence)
@@ -123,6 +143,7 @@ def _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats)
         except IntegrityError:  # corrida/duplicata exata não detectada antes
             stats.duplicates += 1
             continue
+        bucket["stored"] += 1
         if res.status == DupStatus.DUPLICATE:
             stats.duplicates += 1
         else:

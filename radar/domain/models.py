@@ -32,10 +32,24 @@ class Sentiment(StrEnum):
     NEGATIVE = "negative"
 
 
+class BodyStatus(StrEnum):
+    NONE = "none"            # só título/resumo disponíveis
+    FEED = "feed"            # corpo completo veio na própria fonte (ex.: content:encoded)
+    FETCHED = "fetched"      # corpo obtido pelo Enricher (P1)
+    PAYWALLED = "paywalled"
+    FAILED = "failed"
+
+
 class RawArticle(BaseModel):
     """Saída bruta e já tipada de um coletor, antes de normalização/validação."""
 
     source_collector: str
+    source_id: str | None = None       # id em sources.yaml
+    source_type: str | None = None     # newsapi | rss | cvm_ipe | ...
+    body: str | None = None            # corpo completo, quando a fonte fornece
+    body_status: str = BodyStatus.NONE.value
+    tags: list[str] = Field(default_factory=list)
+    canonical_url: str | None = None
     external_id: str | None = None
     title: str | None = None
     description: str | None = None
@@ -52,6 +66,11 @@ class NormalizedArticle(BaseModel):
     """Saída da etapa NORMALIZE (campos essenciais ainda podem faltar; VALIDATE decide)."""
 
     source_collector: str
+    source_id: str | None = None
+    source_type: str | None = None
+    body_status: str = "none"
+    tags: list[str] = Field(default_factory=list)
+    canonical_url: str | None = None
     external_id: str | None = None
     title: str = ""
     description: str | None = None

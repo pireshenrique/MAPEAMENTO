@@ -1,0 +1,26 @@
+# Fontes de notícias. Fonte de verdade: o banco é sincronizado a cada execução.
+# IMPORTANTE: as URLs abaixo são CANDIDATAS, ainda NÃO verificadas (a Fase 10.1 de descoberta confirma feeds e
+# newsrooms a partir de uma rede com acesso). Por isso todas começam com enabled: false / verified: false.
+# Habilite uma fonte somente depois de verificar a URL e avaliá-la pelos critérios de qualidade (radar sources report).
+# tier: 1 = primária/oficial, 2 = especializada, 3 = geral.  scope: per_competitor | feed (padrão por tipo).
+sources:
+  - id: newsapi
+    type: newsapi
+    enabled: false          # fonte secundária opcional (cobertura insuficiente em PT-BR; ver Fase 9)
+    tier: 3
+    notes: "Requer a chave da News API no ambiente. Mantida, sem novos investimentos."
+
+  - id: cvm-dexco
+    type: cvm_ipe
+    url: "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/IPE/DADOS/ipe_cia_aberta_{year}.zip"
+    competitor_hint: Dexco
+    tier: 1
+    options: {company_name_contains: "DEXCO"}
+    notes: "Fatos relevantes e comunicados (dados abertos CVM). Verificar URL e colunas."
+
+  - {id: infomoney, type: rss, url: "https://www.infomoney.com.br/feed/", tier: 3, notes: "negócios/mercado; candidata"}
+  - {id: braziljournal, type: rss, url: "https://braziljournal.com/feed/", tier: 3, notes: "negócios; candidata"}
+  - {id: moneytimes, type: rss, url: "https://www.moneytimes.com.br/feed/", tier: 3, notes: "mercado; candidata"}
+  - {id: neofeed, type: rss, url: "https://neofeed.com.br/feed/", tier: 3, notes: "negócios; candidata"}
+  - {id: seudinheiro, type: rss, url: "https://www.seudinheiro.com/feed/", tier: 3, notes: "mercado; candidata"}
+  # Fontes oficiais dos concorrentes e imprensa setorial (feeds desconhecidos): preencher após a descoberta.
