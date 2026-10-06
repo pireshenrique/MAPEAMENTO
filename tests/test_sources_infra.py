@@ -30,13 +30,23 @@ def http(handler, **cfg):
 
 
 # ---------- config / contrato ----------
-def test_sources_yaml_loads_and_candidates_are_disabled_and_unverified(config):
+APPROVED_CATEGORIES = ["Fato Relevante", "Comunicado ao Mercado", "Aviso aos Acionistas", "Reunião da Administração",
+                       "Assembleia", "Comunicação sobre Transação entre Partes Relacionadas", "Dados Econômico-Financeiros"]
+
+
+def test_only_cvm_dexco_is_enabled_and_verified(config):
     ids = {s.id for s in config.sources}
     assert {"newsapi", "cvm-dexco", "infomoney"} <= ids
-    assert not any(s.enabled for s in config.sources)           # nada habilitado antes da descoberta
-    assert not any(s.verified for s in config.sources)
+    assert [s.id for s in config.sources if s.enabled] == ["cvm-dexco"]       # nenhuma outra fonte habilitada
+    assert [s.id for s in config.sources if s.verified] == ["cvm-dexco"]
     assert {s.scope for s in config.sources if s.type == "rss"} == {"feed"}
     assert next(s for s in config.sources if s.type == "newsapi").scope == "per_competitor"
+
+
+def test_cvm_dexco_category_filter_is_the_approved_one(config):
+    opts = next(s for s in config.sources if s.id == "cvm-dexco").options
+    assert opts["company_name_contains"] == "DEXCO" and opts["include_categories"] == APPROVED_CATEGORIES
+    assert not any("Valores Mobiliários" in c for c in opts["include_categories"])
 
 
 def test_source_config_validation():
@@ -48,9 +58,9 @@ def test_source_config_validation():
 
 def test_registry_builds_only_enabled(config):
     cfg = config.model_copy(deep=True)
-    assert build_collectors(cfg) == []
+    assert [c.source_id for c in build_collectors(cfg)] == ["cvm-dexco"]       # padrão: só a CVM
     for s in cfg.sources:
-        if s.id in ("infomoney", "cvm-dexco"):
+        if s.id == "infomoney":
             s.enabled = True
     got = build_collectors(cfg)
     assert {c.source_id for c in got} == {"infomoney", "cvm-dexco"} and all(isinstance(c, SourceCollector) for c in got)
@@ -200,7 +210,7 @@ def test_discovery_finds_feed_sitemap_newsroom():
         if p == "/": return httpx.Response(200, text='<html><link rel="alternate" type="application/rss+xml" href="/noticias/feed.xml"></html>')
         if p == "/robots.txt": return httpx.Response(200, text="User-agent: *\nAllow: /\nSitemap: https://site.example/sm.xml\n")
         if p == "/noticias/feed.xml": return httpx.Response(200, content=FEED)
-        if p == "/imprensa": return httpx.Response(200, text="ok")
+        if p == "/imprensa": return httpx.Response(200, text="<html><title>Imprensa</title><body>" + "<article><time datetime='2026-10-01'>01/10/2026</time> Release da empresa sobre lançamento de produto</article>" * 20 + "</body></html>")
         return httpx.Response(404)
 
     d = discover("site.example", http(h))
@@ -214,3 +224,12 @@ def test_discovery_unreachable_domain():
 
     d = discover("down.example", http(h))
     assert not d.reachable and d.errors
+
+
+def test_cvm_collector_with_configured_filter_excludes_insider_positions(config):
+    cfg = next(x for x in config.sources if x.id == "cvm-dexco")
+    row = lambda cat, i: ["1", "DEXCO S.A.", "1", cat, "-", "-", f"Assunto {i}", "2026-10-01", "2026-10-02", f"P{i}", f"https://rad.example/{i}"]  # noqa: E731
+    cats = APPROVED_CATEGORIES + ["Valores Mobiliários negociados e detidos (art. 11 da Instr. CVM nº 358)", "Outra Categoria"]
+    c = CvmIpeCollector(cfg, http(lambda r: httpx.Response(200, content=ipe_zip([row(cat, i) for i, cat in enumerate(cats)]))))
+    items = c.fetch(None, SINCE, datetime(2026, 10, 6, tzinfo=timezone.utc))
+    assert [i.tags[0] for i in items] == APPROVED_CATEGORIES               # 7 aprovadas; insiders e outras ficam de fora

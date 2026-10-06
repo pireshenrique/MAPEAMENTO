@@ -25,6 +25,7 @@ class HttpResult:
     etag: str | None = None
     last_modified: str | None = None
     not_modified: bool = False
+    final_url: str = ""          # URL após redirecionamentos
 
 
 class PoliteHttp:
@@ -100,7 +101,7 @@ class PoliteHttp:
             self._sleep(2 ** attempt)
             attempt += 1
         if r.status_code == 304:
-            return HttpResult(url, 304, not_modified=True, etag=etag, last_modified=last_modified)
+            return HttpResult(url, 304, not_modified=True, etag=etag, last_modified=last_modified, final_url=str(r.url))
         if r.status_code != 200:
             raise CollectorError(f"HTTP {r.status_code} em {url}", code=f"http{r.status_code}")
-        return HttpResult(url, 200, r.content, r.headers.get("etag"), r.headers.get("last-modified"))
+        return HttpResult(url, 200, r.content, r.headers.get("etag"), r.headers.get("last-modified"), final_url=str(r.url))

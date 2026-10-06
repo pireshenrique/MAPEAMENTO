@@ -1,0 +1,11 @@
+dominio,host_final,acessivel,robots,catch_all,feeds,sitemaps,newsroom,rejeitados,duplicado_de,erros
+docol.com.br,,False,bloqueado/indisponível,False,,,,,,https://docol.com.br/: robots.txt não permite (ou não pôde ser lido) para https://docol.com.br/
+www.docol.com.br,www.docol.com.br,True,ok,True,,https://www.docol.com.br/sitemap.xml,https://www.docol.com.br/en/imprensa | https://www.docol.com.br/en/sala-de-imprensa | https://www.docol.com.br/en/noticias | https://www.docol.com.br/en/blog | https://www.docol.com.br/en/newsroom | https://www.docol.com.br/en/press | https://www.docol.com.br/en/ri | https://www.docol.com.br/en/investidores,,,
+br.kohler.com,br.kohler.com,True,ok,True,,https://br.kohler.com/sitemap.xml,,/imprensa: catch-all (igual ao caminho inexistente) | /sala-de-imprensa: catch-all (igual ao caminho inexistente) | /noticias: catch-all (igual ao caminho inexistente) | /blog: catch-all (igual ao caminho inexistente) | /newsroom: catch-all (igual ao caminho inexistente) | /press: catch-all (igual ao caminho inexistente) | /ri: catch-all (igual ao caminho inexistente) | /investidores: catch-all (igual ao caminho inexistente),,
+dex.co,www.dex.co,True,ok,False,,https://www.dex.co/sitemap_index.xml,https://www.dex.co/imprensa/ | https://www.dex.co/noticias/ | https://www.dex.co/en/press/,,,https://www.dex.co/feed: HTTP 500 em https://www.dex.co/feed | https://www.dex.co/feed/: HTTP 500 em https://www.dex.co/feed/ | https://www.dex.co/rss: HTTP 500 em https://www.dex.co/rss
+www.dex.co,www.dex.co,True,?,False,,,,,dex.co,
+www.deca.com.br,www.deca.com.br,True,ok,False,,https://www.deca.com.br/sitemap_index.xml,https://www.deca.com.br/blog,,,
+deca.com.br,www.deca.com.br,True,?,False,,,,,www.deca.com.br,
+ri.tigre.com.br,ri.tigre.com.br,True,ok,False,https://ri.tigre.com.br/feed/,/sitemap_index.xml | https://ri.tigre.com.br/sitemap_index.xml,https://ri.tigre.com.br/noticias/,,,
+celite.com.br,www.celite.com.br,True,ok,False,,http://dev.celite.com.br:80/sitemap.xml,https://www.celite.com.br/blog,,,
+www.celite.com.br,www.celite.com.br,True,?,False,,,,,celite.com.br,

@@ -143,7 +143,7 @@ def sources_discover(domain: list[str] = typer.Option(None, "--domain", "-d", he
     """Descobre feeds RSS, sitemaps e páginas de imprensa (somente leitura; respeita robots.txt)."""
     import csv
     from urllib.parse import urlsplit
-    from radar.collectors.discovery import discover
+    from radar.collectors.discovery import discover, normalize_domain
     from radar.collectors.http import PoliteHttp
     cfg = load_config()
     setup_logging(cfg.env.log_level, cfg.env.log_format)
@@ -153,14 +153,19 @@ def sources_discover(domain: list[str] = typer.Option(None, "--domain", "-d", he
         domains += [urlsplit(s.url).hostname for s in cfg.sources if s.url and "{year}" not in s.url]
     http = PoliteHttp(cfg.settings.http)
     out.parent.mkdir(parents=True, exist_ok=True)
+    seen: dict = {}
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["dominio", "acessivel", "robots", "feeds", "sitemaps", "newsroom", "erros"])
-        for d in dict.fromkeys(x for x in domains if x):
-            r = discover(d, http)
-            w.writerow([r.domain, r.reachable, r.robots, " | ".join(r.feeds), " | ".join(r.sitemaps),
-                        " | ".join(r.newsroom), " | ".join(r.errors)[:300]])
-            typer.echo(f"{r.domain:28} acessível={r.reachable} feeds={len(r.feeds)} sitemaps={len(r.sitemaps)} newsroom={len(r.newsroom)} erros={len(r.errors)}")
+        w.writerow(["dominio", "host_final", "acessivel", "robots", "catch_all", "feeds", "sitemaps", "newsroom", "fracos", "rejeitados",
+                    "duplicado_de", "erros"])
+        for d in dict.fromkeys(normalize_domain(x) for x in domains if x):
+            r = discover(d, http, seen)
+            w.writerow([r.domain, r.final_host or "", r.reachable, r.robots, r.catch_all, " | ".join(r.feeds),
+                        " | ".join(r.sitemaps), " | ".join(r.newsroom), " | ".join(r.weak), " | ".join(r.rejected), r.duplicate_of or "",
+                        " | ".join(r.errors)[:300]])
+            typer.echo(f"{r.domain:26} host_final={r.final_host or '-':24} acessível={r.reachable} catch_all={r.catch_all} "
+                       f"feeds={len(r.feeds)} sitemaps={len(r.sitemaps)} newsroom={len(r.newsroom)} fracos={len(r.weak)} rejeitados={len(r.rejected)}"
+                       + (f" (duplicado de {r.duplicate_of})" if r.duplicate_of else ""))
     typer.echo(f"relatório: {out}")
 
 

@@ -13,10 +13,21 @@ sources:
   - id: cvm-dexco
     type: cvm_ipe
     url: "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/IPE/DADOS/ipe_cia_aberta_{year}.zip"
+    enabled: true           # validada contra dados reais da CVM (Fase 10)
+    verified: true
     competitor_hint: Dexco
     tier: 1
-    options: {company_name_contains: "DEXCO"}
-    notes: "Fatos relevantes e comunicados (dados abertos CVM). Verificar URL e colunas."
+    options:
+      company_name_contains: "DEXCO"
+      include_categories:   # exclui "Valores Mobiliários negociados e detidos" (posições de insiders; baixo valor)
+        - Fato Relevante
+        - Comunicado ao Mercado
+        - Aviso aos Acionistas
+        - Reunião da Administração
+        - Assembleia
+        - Comunicação sobre Transação entre Partes Relacionadas
+        - Dados Econômico-Financeiros
+    notes: "Fatos relevantes e comunicados (dados abertos CVM). Nome real na CVM: DEXCO S.A."
 
   - {id: infomoney, type: rss, url: "https://www.infomoney.com.br/feed/", tier: 3, notes: "negócios/mercado; candidata"}
   - {id: braziljournal, type: rss, url: "https://braziljournal.com/feed/", tier: 3, notes: "negócios; candidata"}
