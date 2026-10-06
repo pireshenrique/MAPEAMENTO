@@ -157,8 +157,8 @@ class RunRepository:
     def __init__(self, s: Session):
         self.s = s
 
-    def start(self, kind: str, source: str = "") -> CollectionRun:
-        run = CollectionRun(kind=kind, source=source, errors=[])
+    def start(self, kind: str, source: str = "", started_at: datetime | None = None) -> CollectionRun:
+        run = CollectionRun(kind=kind, source=source, errors=[], started_at=started_at or utcnow())
         self.s.add(run)
         self.s.flush()
         return run

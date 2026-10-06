@@ -1,0 +1,131 @@
+"""Orquestra COLLECT -> NORMALIZE -> VALIDATE -> MATCH -> DEDUP -> STORE (a análise por IA é separada)."""
+from __future__ import annotations
+
+import logging
+from collections import Counter
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta, timezone
+from typing import Sequence
+
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
+from radar.collectors.base import CollectorError, SourceCollector
+from radar.db.repositories import CompetitorRepository, NewsRepository, RunRepository
+from radar.dedup.service import Action, Deduplicator
+from radar.domain.models import Article, DupStatus
+from radar.pipeline.match import match_all
+from radar.pipeline.normalize import normalize
+from radar.pipeline.validate import validate
+from radar.settings import AppConfig
+
+log = logging.getLogger(__name__)
+_FATAL_CODES = {"apiKeyInvalid", "apiKeyMissing", "apiKeyDisabled", "apiKeyExhausted", "missingApiKey"}
+
+
+@dataclass
+class CollectStats:
+    found: int = 0
+    new: int = 0
+    duplicates: int = 0          # pulados (mesma URL/ID) + armazenadas como `duplicate`
+    possible_duplicates: int = 0
+    discarded: Counter = field(default_factory=Counter)  # motivo -> quantidade
+    errors: list[str] = field(default_factory=list)
+
+    @property
+    def discarded_total(self) -> int:
+        return sum(self.discarded.values())
+
+
+def compute_since(session: Session, cfg: AppConfig, now: datetime, days: int | None = None) -> datetime:
+    """Primeira coleta: backfill. Depois: desde a última execução (com sobreposição segura)."""
+    if days is not None:
+        return now - timedelta(days=days)
+    last = RunRepository(session).last("collect")
+    if last is None:
+        return now - timedelta(days=cfg.settings.collection.backfill_days)
+    return last.started_at - timedelta(hours=cfg.settings.collection.incremental_overlap_hours)
+
+
+def run_collection(session: Session, collectors: Sequence[SourceCollector], cfg: AppConfig,
+                   now: datetime | None = None, days: int | None = None) -> CollectStats:
+    now = now or datetime.now(timezone.utc)
+    stats = CollectStats()
+    runs = RunRepository(session)
+    since = compute_since(session, cfg, now, days)
+    run = runs.start("collect", ",".join(c.name for c in collectors), started_at=now)
+    session.commit()
+    log.info("coleta iniciada: fontes=%s desde=%s", run.source or "(nenhuma)", since.isoformat())
+    if not collectors:
+        stats.errors.append("nenhuma fonte configurada (defina NEWS_API_KEY)")
+        log.error(stats.errors[-1])
+
+    comp_rows = {c.name: c for c in CompetitorRepository(session).list(only_active=True)}
+    active_cfgs = [c for c in cfg.competitors if c.active and c.name in comp_rows]
+    repo = NewsRepository(session)
+    dedup = Deduplicator(repo, cfg.settings.dedup)
+
+    for collector in collectors:
+        for comp in active_cfgs:
+            try:
+                raws = collector.fetch(comp, since, now)
+            except CollectorError as e:
+                msg = f"{collector.name}/{comp.name}: {e}"
+                log.error("erro de coleta: %s", msg)
+                stats.errors.append(msg)
+                if e.code in _FATAL_CODES:
+                    log.error("erro fatal de credencial/cota em %s; interrompendo a fonte", collector.name)
+                    break
+                continue
+            stats.found += len(raws)
+            for raw in raws:
+                try:
+                    _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats)
+                except Exception as e:  # um artigo problemático não derruba o lote
+                    session.rollback()
+                    msg = f"erro ao processar artigo '{(raw.title or '')[:60]}': {type(e).__name__}: {e}"
+                    log.exception(msg)
+                    stats.errors.append(msg)
+            session.commit()
+
+    run = session.get(type(run), run.id)
+    run.found, run.new, run.duplicates = stats.found, stats.new, stats.duplicates + stats.possible_duplicates
+    run.discarded, run.errors = stats.discarded_total, stats.errors
+    runs.finish(run)
+    session.commit()
+    log.info("coleta concluída: encontradas=%d novas=%d duplicadas=%d possíveis_duplicatas=%d descartadas=%d erros=%d",
+             stats.found, stats.new, stats.duplicates, stats.possible_duplicates, stats.discarded_total, len(stats.errors))
+    if stats.discarded:
+        log.info("descartes por motivo: %s", dict(stats.discarded))
+    return stats
+
+
+def _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats) -> None:  # noqa: ANN001
+    n = normalize(raw, now)
+    if (reason := validate(n, now, cfg.settings.validation, cfg.settings.collection)):
+        stats.discarded[reason] += 1
+        return
+    matches = match_all(n, active_cfgs, cfg.settings.matching)
+    if not matches:
+        stats.discarded["sem_concorrente"] += 1
+        return
+    for m in matches:
+        article = Article(**n.model_dump(), competitor_name=m.competitor,
+                          match_confidence=m.confidence, match_evidence=m.evidence)
+        comp_id = comp_rows[m.competitor].id
+        res = dedup.check(article, comp_id)
+        if res.action == Action.SKIP:
+            stats.duplicates += 1
+            continue
+        try:
+            with session.begin_nested():
+                repo.add(article, comp_id, dup_status=res.status, dup_of_id=res.dup_of_id, dup_score=res.score)
+        except IntegrityError:  # corrida/duplicata exata não detectada antes
+            stats.duplicates += 1
+            continue
+        if res.status == DupStatus.DUPLICATE:
+            stats.duplicates += 1
+        else:
+            stats.new += 1
+            if res.status == DupStatus.POSSIBLE:
+                stats.possible_duplicates += 1
