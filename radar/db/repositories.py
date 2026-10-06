@@ -1,7 +1,7 @@
 """Única porta de acesso ao banco. Recebe Session; quem chama controla a transação."""
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Sequence
 
 from sqlalchemy import func, select
@@ -103,6 +103,22 @@ class NewsRepository:
     def exists_url(self, competitor_id: int, url_normalized: str) -> bool:
         return self.s.scalar(select(News.id).where(
             News.competitor_id == competitor_id, News.url_normalized == url_normalized)) is not None
+
+    def find_by_url(self, competitor_id: int, url_normalized: str) -> News | None:
+        return self.s.scalar(select(News).where(News.competitor_id == competitor_id,
+                                                News.url_normalized == url_normalized))
+
+    def find_by_external_id(self, competitor_id: int, collector: str, external_id: str) -> News | None:
+        return self.s.scalar(select(News).where(
+            News.competitor_id == competitor_id, News.source_collector == collector,
+            News.external_id == external_id).limit(1))
+
+    def dedup_candidates(self, competitor_id: int, around: datetime, window_days: int) -> list[News]:
+        """Notícias do mesmo concorrente publicadas em ±window_days (mais antigas primeiro)."""
+        return list(self.s.scalars(select(News).where(
+            News.competitor_id == competitor_id,
+            News.published_at >= around - timedelta(days=window_days),
+            News.published_at <= around + timedelta(days=window_days)).order_by(News.published_at, News.id)))
 
     def latest_published(self, competitor_id: int | None = None) -> datetime | None:
         q = select(func.max(News.published_at))
