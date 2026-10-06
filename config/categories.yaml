@@ -1,0 +1,21 @@
+# Categorias configuráveis. A IA pode sugerir outras; as desconhecidas são mapeadas para "Outro".
+categories:
+  - {name: Produto, description: "Portfólio, linhas e características de produtos"}
+  - {name: Lançamento, description: "Lançamento de novos produtos ou linhas"}
+  - {name: Investimento, description: "Aportes de capital, CAPEX"}
+  - {name: Expansão, description: "Expansão geográfica, de capacidade ou de canais"}
+  - {name: Fábrica, description: "Plantas, linhas de produção, paradas"}
+  - {name: M&A, description: "Fusões, aquisições, desinvestimentos"}
+  - {name: Resultado financeiro, description: "Balanços, receita, margens"}
+  - {name: Estratégia, description: "Mudanças estratégicas e reestruturações"}
+  - {name: Marketing, description: "Campanhas, patrocínios, marca"}
+  - {name: Tecnologia, description: "Novas tecnologias, inovação, P&D"}
+  - {name: Sustentabilidade, description: "Iniciativas ambientais de produto/processo"}
+  - {name: ESG, description: "Governança, relatórios e metas ESG"}
+  - {name: Preços, description: "Reajustes, políticas de preço"}
+  - {name: Distribuição, description: "Canais, varejo, logística"}
+  - {name: Parceria, description: "Alianças e parcerias estratégicas"}
+  - {name: Mercado, description: "Tendências e dados de mercado"}
+  - {name: Regulamentação, description: "Normas, tributos, regulação"}
+  - {name: Gestão, description: "Mudanças de executivos e estrutura"}
+  - {name: Outro, description: "Não se enquadra nas demais"}

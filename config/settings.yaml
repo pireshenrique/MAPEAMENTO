@@ -1,0 +1,29 @@
+collection:
+  backfill_days: 7          # janela da primeira coleta
+  incremental_overlap_hours: 6   # sobreposição ao coletar desde a última execução
+  language: pt
+  page_size: 50
+  max_pages_per_query: 1
+  request_timeout_seconds: 20
+  max_retries: 3
+  interval_hours: 6         # referência para agendadores externos
+  blocked_domains: []
+validation:
+  min_title_length: 15
+  max_age_days: 30
+matching:
+  min_confidence: 0.5       # abaixo disso a notícia é descartada
+  ambiguous_min_context_hits: 2
+dedup:
+  similarity_threshold: 90  # 0-100 (rapidfuzz token_set_ratio)
+  window_days: 3
+ai:
+  model: claude-haiku-4-5-20251001
+  max_tokens: 700
+  temperature: 0.0
+  max_analyses_per_run: 100
+  max_attempts: 3           # tentativas por notícia antes de marcar failed
+  request_timeout_seconds: 60
+  min_match_confidence: 0.6 # abaixo disso a notícia não consome IA
+ui:
+  page_size: 25

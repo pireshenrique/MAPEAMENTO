@@ -1,0 +1,83 @@
+# Para adicionar um concorrente, inclua um bloco aqui. Nenhuma alteração de código é necessária.
+# aliases            : nomes fortes, praticamente inequívocos (identificam sozinhos)
+# ambiguous_aliases  : nomes comuns/ambíguos; só valem com termos de contexto
+# context_terms      : termos do setor que confirmam o contexto
+# exclude_terms      : termos que indicam outro sentido (ex.: animal, time de futebol)
+# weight             : multiplicador de relevância do concorrente (1.0 = neutro)
+competitors:
+  - name: Deca
+    aliases: ["Deca Louças", "Deca Metais", "Deca Hydra", "Hydra Deca"]
+    ambiguous_aliases: ["Deca"]
+    domains: ["deca.com.br"]
+    keywords: ["Deca louças sanitárias", "Deca metais sanitários"]
+    priority_categories: [Produto, Lançamento, Investimento]
+    weight: 1.0
+  - name: Roca
+    aliases: ["Roca Brasil", "Roca Sanitários", "Roca Group", "Roca Gabinete"]
+    ambiguous_aliases: ["Roca"]
+    domains: ["roca.com.br", "roca.com"]
+    keywords: ["Roca louças sanitárias", "Roca metais"]
+    priority_categories: [Produto, Lançamento, Expansão]
+    weight: 1.0
+  - name: Celite
+    aliases: ["Celite"]
+    ambiguous_aliases: []
+    domains: ["celite.com.br"]
+    keywords: ["Celite louças", "Celite metais"]
+    priority_categories: [Produto, Lançamento, Investimento]
+    weight: 1.0
+  - name: Docol
+    aliases: ["Docol", "Docol Metais"]
+    ambiguous_aliases: []
+    domains: ["docol.com.br"]
+    keywords: ["Docol metais sanitários", "Docol chuveiros"]
+    priority_categories: [Produto, Lançamento, Expansão]
+    weight: 1.0
+  - name: Tigre
+    aliases: ["Tigre S.A.", "Grupo Tigre", "Tigre Materiais e Soluções", "Tigre Tubos e Conexões"]
+    ambiguous_aliases: ["Tigre"]
+    domains: ["tigre.com.br"]
+    keywords: ["Tigre tubos e conexões", "Tigre hidráulica"]
+    priority_categories: [Produto, Expansão, M&A]
+    weight: 1.0
+  - name: Kohler
+    aliases: ["Kohler Brasil", "Kohler Co"]
+    ambiguous_aliases: ["Kohler"]
+    domains: ["kohler.com", "br.kohler.com"]
+    keywords: ["Kohler banheiro", "Kohler metais sanitários"]
+    priority_categories: [Produto, Lançamento, M&A]
+    weight: 1.0
+  - name: Dexco
+    aliases: ["Dexco", "Duratex"]
+    ambiguous_aliases: []
+    domains: ["dex.co", "dexco.com.br"]
+    keywords: ["Dexco louças e metais", "Dexco Deca"]
+    priority_categories: [Investimento, M&A, Resultado financeiro]
+    weight: 1.0
+
+# Termos de contexto e exclusão compartilhados (podem ser sobrescritos por concorrente)
+defaults:
+  context_terms:
+    - banheiro
+    - louça
+    - louças
+    - sanitário
+    - sanitários
+    - metais
+    - torneira
+    - chuveiro
+    - vaso sanitário
+    - hidráulica
+    - hidráulico
+    - revestimento
+    - cuba
+    - construção civil
+    - material de construção
+    - lorenzetti
+  exclude_terms:
+    - futebol
+    - zoológico
+    - felino
+    - onça
+    - campeonato
+    - gol

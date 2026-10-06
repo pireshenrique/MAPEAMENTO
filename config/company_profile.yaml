@@ -1,0 +1,20 @@
+# Perfil da empresa monitorada (usado no contexto da análise de IA).
+# Preencha apenas informações confirmadas. Listas vazias são ignoradas.
+company:
+  name: Lorenzetti
+  segments:
+    - chuveiros elétricos
+    - metais sanitários
+    - louças sanitárias
+    - bombas hidráulicas
+    - purificadores
+    - aquecedores a gás
+  # Campos reservados para evolução futura:
+  products: []
+  brands: []
+  categories: []
+  technologies: []
+  markets: []
+  competitors_by_category: {}   # ex.: {"metais sanitários": ["Docol", "Deca"]}
+  keywords: []
+  strategic_terms: []
