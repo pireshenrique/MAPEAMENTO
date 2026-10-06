@@ -48,8 +48,8 @@ competitors:
     priority_categories: [Produto, Lançamento, M&A]
     weight: 1.0
   - name: Dexco
-    aliases: ["Dexco", "Duratex"]
-    ambiguous_aliases: []
+    aliases: ["Dexco"]
+    ambiguous_aliases: ["Duratex"]   # nome antigo; "Clube Duratex" etc. exigem contexto do setor
     domains: ["dex.co", "dexco.com.br"]
     keywords: ["Dexco louças e metais", "Dexco Deca"]
     priority_categories: [Investimento, M&A, Resultado financeiro]
