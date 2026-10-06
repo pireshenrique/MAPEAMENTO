@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% block title %}{{ n.title }}{% endblock %}{% block content %}
+{% set a = n.analysis %}
+<p><a href="/">← Voltar ao feed</a></p>
+<div class="card"><span class="chip">{{ n.competitor.name }}</span>
+ {% if n.dup_status != 'unique' %}<span class="badge">{{ 'Duplicata' if n.dup_status == 'duplicate' else 'Possível duplicata' }}</span>{% endif %}
+ <h2 style="font-size:20px;margin-top:8px">{{ n.title }}</h2>
+ <dl><dt>Fonte</dt><dd>{{ n.source_name or '—' }}{% if n.source_domain %} ({{ n.source_domain }}){% endif %}</dd>
+ <dt>Publicada em</dt><dd>{{ fmt_dt(n.published_at) }}</dd>
+ {% if n.author %}<dt>Autor</dt><dd>{{ n.author }}</dd>{% endif %}
+ <dt>URL original</dt><dd><a href="{{ safe_url(n.url) }}" target="_blank" rel="noopener noreferrer">{{ n.url }}</a></dd>
+ <dt>Coletada em</dt><dd>{{ fmt_dt(n.collected_at) }}</dd></dl>
+ {% if n.description %}<p class="meta" style="margin-top:10px">{{ n.description }}</p>{% endif %}</div>
+
+{% if a %}<div class="card"><h3>Análise competitiva</h3>
+ <dl><dt>Categoria</dt><dd>{{ a.category }}{% if a.subcategory %} · {{ a.subcategory }}{% endif %}</dd>
+ <dt>Relevância</dt><dd><span class="rel rel{{ a.relevance_score }}">{{ a.relevance_score }}/5 · {{ RELEVANCE_LABEL[a.relevance_score] }}</span></dd>
+ <dt>Impacto para a Lorenzetti</dt><dd>{{ IMPACT_LABEL[a.competitive_impact] }} <span class="note">({{ IMPACT_HINT[a.competitive_impact] }})</span></dd>
+ <dt>Sentimento da notícia</dt><dd>{{ IMPACT_LABEL[a.sentiment] }}</dd>
+ <dt>Resumo</dt><dd>{{ a.summary }}</dd>
+ <dt>Principais pontos</dt><dd><ul style="margin:0;padding-left:18px">{% for p in a.key_points %}<li>{{ p }}</li>{% else %}<li>—</li>{% endfor %}</ul></dd>
+ <dt>Justificativa estratégica</dt><dd>{{ a.strategic_reason }}</dd>
+ <dt>Analisada em</dt><dd>{{ fmt_dt(a.analyzed_at) }}</dd>
+ <dt>Modelo</dt><dd>{{ a.model_used }} <span class="note">(prompt {{ a.prompt_version }})</span></dd></dl></div>
+{% else %}<div class="card"><h3>Análise competitiva</h3><p class="note">{{ 'A análise falhou e será repetida por "radar reprocess".' if n.analysis_status == 'failed' else 'Ainda não analisada. Execute "radar analyze".' }}</p></div>{% endif %}
+
+{% if original or duplicates %}<div class="card"><h3>Notícias relacionadas</h3>
+ {% if original %}<p>Possível original: <a href="/news/{{ original.id }}">{{ original.title }}</a> <span class="note">({{ original.source_name }}, similaridade {{ n.dup_score|round|int }}%)</span></p>{% endif %}
+ {% for d in duplicates %}<p><a href="/news/{{ d.id }}">{{ d.title }}</a> <span class="note">{{ d.source_name }} · {{ d.dup_status }}</span></p>{% endfor %}</div>{% endif %}
+{% endblock %}

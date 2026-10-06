@@ -1,0 +1,8 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Competitive Intelligence Radar{% endblock %}</title>
+<link rel="stylesheet" href="/static/style.css"><script src="/static/htmx.min.js" defer></script></head>
+<body><header><div class="in"><strong>Competitive Intelligence Radar</strong>
+<nav><a href="/" class="{{ 'on' if request.url.path == '/' }}">Notícias</a>
+<a href="/intelligence" class="{{ 'on' if request.url.path == '/intelligence' }}">Inteligência</a></nav></div></header>
+<main>{% block content %}{% endblock %}</main></body></html>

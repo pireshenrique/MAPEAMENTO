@@ -27,3 +27,5 @@ ai:
   min_match_confidence: 0.6 # abaixo disso a notícia não consome IA
 ui:
   page_size: 25
+  min_chart_sample: 10      # amostra mínima para exibir gráficos (evita gráficos enganosos)
+  timezone: America/Sao_Paulo

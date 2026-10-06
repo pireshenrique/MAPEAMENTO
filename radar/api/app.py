@@ -57,7 +57,7 @@ api = APIRouter(prefix="/api")
 def list_news(request: Request, s: SessionDep, f: FiltersDep, page: Annotated[int, Query(ge=1)] = 1,
               page_size: Annotated[int | None, Query(ge=1, le=100)] = None):
     size = page_size or request.app.state.ctx.cfg.settings.ui.page_size
-    rows, total = queries.search_news(s, f, page, size)
+    rows, total = queries.search_news(s, f, page, size, request.app.state.now())
     return Page(items=[to_out(n) for n in rows], total=total, page=page, page_size=size)
 
 
@@ -71,8 +71,8 @@ def news_detail(news_id: int, s: SessionDep):
 
 
 @api.get("/kpis")
-def get_kpis(s: SessionDep):
-    return queries.kpis(s)
+def get_kpis(request: Request, s: SessionDep):
+    return queries.kpis(s, request.app.state.now())
 
 
 @api.get("/filters")
@@ -81,20 +81,29 @@ def get_filters(s: SessionDep):
 
 
 @api.get("/stats")
-def get_stats(s: SessionDep, days: Annotated[int, Query(ge=1, le=365)] = 30):
-    return queries.stats(s, days)
+def get_stats(request: Request, s: SessionDep, days: Annotated[int, Query(ge=1, le=365)] = 30):
+    return queries.stats(s, days, request.app.state.now())
 
 
 def create_app(ctx: Context | None = None) -> FastAPI:
     ctx = ctx or build_context(load_config())
     app = FastAPI(title="Competitive Intelligence Radar", docs_url="/api/docs", openapi_url="/api/openapi.json")
     app.state.ctx = ctx
+    app.state.now = lambda: datetime.now(timezone.utc)  # relógio injetável (testes)
     app.include_router(api)
+
+    @app.get("/favicon.ico", include_in_schema=False)
+    def favicon():
+        from fastapi import Response
+        return Response(status_code=204)
 
     @app.get("/healthz")
     def healthz():
         return {"status": "ok"}
 
-    from radar.api import pages  # páginas HTML (Etapa 7)
+    from fastapi.staticfiles import StaticFiles
+
+    from radar.api import pages
+    app.mount("/static", StaticFiles(directory=Path(__file__).parent.parent / "ui" / "static"), name="static")
     app.include_router(pages.router)
     return app

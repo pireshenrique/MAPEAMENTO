@@ -1,0 +1,42 @@
+{% extends "base.html" %}{% block content %}
+<section class="kpis">
+ <div class="kpi"><b>{{ kpis.collected }}</b><span>Notícias coletadas</span></div>
+ <div class="kpi"><b>{{ kpis.relevant }}</b><span>Relevantes (nota ≥ 3)</span></div>
+ <div class="kpi"><b>{{ kpis.high_relevance }}</b><span>Alta relevância (nota ≥ 4)</span></div>
+ <div class="kpi"><b>{{ kpis.competitors_monitored }}</b><span>Concorrentes monitorados</span></div>
+ <div class="kpi"><b>{{ kpis.last_24h }}</b><span>Últimas 24h</span></div>
+ <div class="kpi"><b>{{ kpis.last_7d }}</b><span>Últimos 7 dias</span></div>
+</section>
+{% if kpis.pending_analysis %}<p class="note">{{ kpis.pending_analysis }} notícia(s) aguardando análise de IA.
+{% if kpis.last_collection_at %}Última coleta: {{ fmt_dt(kpis.last_collection_at) }}.{% endif %}</p>{% endif %}
+
+<form class="f" method="get" action="/" hx-get="/" hx-target="#results" hx-select="#results" hx-push-url="true"
+      hx-trigger="change, keyup changed delay:400ms from:#q">
+ <div><label for="q">Busca</label><input id="q" name="q" type="search" value="{{ f.q or '' }}" placeholder="título, descrição ou resumo"></div>
+ <div><label>Concorrente</label><select name="competitor"><option value="">Todos</option>
+  {% for c in facets.competitors %}<option {{ 'selected' if f.competitor == c }}>{{ c }}</option>{% endfor %}</select></div>
+ <div><label>Período</label><select name="days"><option value="">Todo o histórico</option>
+  {% for d, l in PERIODS %}<option value="{{ d }}" {{ 'selected' if f.days == d }}>{{ l }}</option>{% endfor %}</select></div>
+ <div><label>Categoria</label><select name="category"><option value="">Todas</option>
+  {% for c in facets.categories %}<option {{ 'selected' if f.category == c }}>{{ c }}</option>{% endfor %}</select></div>
+ <div><label>Relevância mínima</label><select name="relevance_min"><option value="">Qualquer</option>
+  {% for r in facets.relevance_levels %}<option value="{{ r }}" {{ 'selected' if f.relevance_min == r }}>{{ r }} · {{ RELEVANCE_LABEL[r] }}</option>{% endfor %}</select></div>
+ <div><label>Impacto (p/ Lorenzetti)</label><select name="impact"><option value="">Todos</option>
+  {% for i in facets.impacts %}<option value="{{ i }}" {{ 'selected' if f.impact == i }}>{{ IMPACT_LABEL[i] }}</option>{% endfor %}</select></div>
+ <div><label>Fonte</label><select name="source"><option value="">Todas</option>
+  {% for s in facets.sources %}<option {{ 'selected' if f.source == s }}>{{ s }}</option>{% endfor %}</select></div>
+ <div><label>Ordenar por</label><select name="sort"><option value="date">Mais recentes</option>
+  <option value="relevance" {{ 'selected' if f.sort == 'relevance' }}>Maior relevância</option></select></div>
+ <div class="act"><label style="display:flex;gap:6px;align-items:center;margin:0"><input type="checkbox" name="include_duplicates" value="1" style="width:auto" {{ 'checked' if f.include_duplicates }}>Mostrar duplicatas</label>
+  <button>Filtrar</button><a class="btn sec" href="/">Limpar</a></div>
+</form>
+
+<div id="results">
+ <p class="note">{{ total }} notícia(s){% if pages > 1 %} · página {{ page }} de {{ pages }}{% endif %}</p>
+ {% for n in news %}{% include "_item.html" %}{% else %}
+ <div class="empty">Nenhuma notícia encontrada para os filtros atuais.<br>Se ainda não houve coleta, execute <code>radar run</code>.</div>{% endfor %}
+ {% if pages > 1 %}<div class="pager">
+  {% if page > 1 %}<a class="btn sec" href="/?{{ qs(page=page-1) }}">← Anterior</a>{% endif %}
+  <span>{{ page }} / {{ pages }}</span>
+  {% if page < pages %}<a class="btn sec" href="/?{{ qs(page=page+1) }}">Próxima →</a>{% endif %}</div>{% endif %}
+</div>{% endblock %}

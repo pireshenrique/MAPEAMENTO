@@ -70,6 +70,8 @@ class AIConfig(_Strict):
 
 class UIConfig(_Strict):
     page_size: int = 25
+    min_chart_sample: int = 10
+    timezone: str = "America/Sao_Paulo"
 
 
 class AppSettings(_Strict):

@@ -1,0 +1,27 @@
+{% extends "base.html" %}{% block title %}Inteligência{% endblock %}{% block content %}
+<p>Período: {% for d in (7, 30, 90) %}<a class="btn {{ '' if d == days else 'sec' }}" href="/intelligence?days={{ d }}">{{ d }} dias</a> {% endfor %}
+<span class="note">Amostra: {{ st.total }} notícias ({{ st.analyzed }} analisadas por IA). Gráficos só aparecem com amostra ≥ {{ min_sample }}.</span></p>
+<div class="grid2">
+ <div class="card"><h3>Notícias por concorrente</h3>
+  {% if st.total >= min_sample %}{% set rows = st.by_competitor %}{% include "_bars.html" %}
+  {% else %}<p class="empty">Dados insuficientes ({{ st.total }} de {{ min_sample }}).</p>{% endif %}</div>
+ <div class="card"><h3>Evolução diária (por data de publicação)</h3>
+  {% set active_days = st.timeline|selectattr('count')|list|length %}
+  {% if st.total >= min_sample and active_days >= 3 %}
+   {% set mx = (st.timeline|map(attribute='count')|max) or 1 %}{% set n = st.timeline|length %}
+   <svg class="tl" viewBox="0 0 {{ n * 10 }} 110" preserveAspectRatio="none" role="img" aria-label="Notícias por dia">
+   {% for d in st.timeline %}<rect x="{{ loop.index0 * 10 + 1 }}" width="8" y="{{ 100 - d.count / mx * 95 }}" height="{{ d.count / mx * 95 }}"><title>{{ d.date }}: {{ d.count }}</title></rect>{% endfor %}</svg>
+   <p class="note">{{ st.timeline[0].date }} → {{ st.timeline[-1].date }} · máx. {{ mx }}/dia</p>
+  {% else %}<p class="empty">Dados insuficientes (precisa de ≥ {{ min_sample }} notícias em ≥ 3 dias distintos).</p>{% endif %}</div>
+ <div class="card"><h3>Distribuição de relevância</h3>
+  {% if st.analyzed >= min_sample %}{% set rows = st.relevance %}{% include "_bars.html" %}<p class="note">Escala 1 (irrelevante) a 5 (crítica).</p>
+  {% else %}<p class="empty">Dados insuficientes: {{ st.analyzed }} de {{ min_sample }} notícias analisadas.</p>{% endif %}</div>
+ <div class="card"><h3>Distribuição de impacto (ótica Lorenzetti)</h3>
+  {% if st.analyzed >= min_sample %}{% set rows = st.impact %}{% include "_bars.html" %}
+  {% else %}<p class="empty">Dados insuficientes: {{ st.analyzed }} de {{ min_sample }} notícias analisadas.</p>{% endif %}</div>
+ <div class="card"><h3>Categorias mais frequentes</h3>
+  {% if st.analyzed >= min_sample %}{% set rows = st.categories %}{% include "_bars.html" %}
+  {% else %}<p class="empty">Dados insuficientes: {{ st.analyzed }} de {{ min_sample }} notícias analisadas.</p>{% endif %}</div>
+ <div class="card"><h3>Em breve</h3><p class="note">Temas emergentes, tendências e concorrentes mais ativos ao longo do tempo
+ dependem de maior histórico acumulado e ficam reservados para uma próxima fase.</p></div>
+</div>{% endblock %}

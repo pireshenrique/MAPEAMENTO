@@ -1,0 +1,2 @@
+{% set mx = (rows|map(attribute='count')|max) or 1 %}
+<div class="bars">{% for r in rows %}<div class="row"><span>{{ IMPACT_LABEL.get(r.label, r.label) }}</span><div class="bar"><i style="width:{{ (r.count / mx * 100)|round(1) }}%"></i></div><b>{{ r.count }}</b></div>{% endfor %}</div>

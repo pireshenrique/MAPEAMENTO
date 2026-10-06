@@ -54,7 +54,9 @@ def ctx(tmp_path, config):
 
 @pytest.fixture
 def client(ctx):
-    return TestClient(create_app(ctx))
+    app = create_app(ctx)
+    app.state.now = lambda: NOW
+    return TestClient(app)
 
 
 def titles(r):
@@ -151,3 +153,51 @@ def test_facets_and_stats(client, ctx):
 def test_no_secrets_in_responses(client):
     for url in ("/api/kpis", "/api/filters", "/api/news", "/api/openapi.json"):
         assert "api_key" not in client.get(url).text.lower()
+
+
+# ---- páginas HTML ----
+def test_pages_render(client):
+    r = client.get("/")
+    assert r.status_code == 200 and "Docol lança linha de metais premium" in r.text and "Concorrentes monitorados" in r.text
+    assert "outro.com" not in r.text                       # duplicata oculta
+    assert "Aguardando análise" in r.text and "Possível duplicata" in r.text
+    assert 'src="/static/htmx.min.js"' in r.text and "sk-" not in r.text
+
+
+def test_page_filters_tolerate_empty_form_values(client):
+    r = client.get("/?q=&competitor=&days=&category=&relevance_min=&impact=&source=&sort=date")
+    assert r.status_code == 200 and "5 notícia(s)" in r.text
+    r = client.get("/?competitor=Roca&relevance_min=4")
+    assert "1 notícia(s)" in r.text and "Roca amplia" in r.text and "Docol patrocina" not in r.text
+    assert client.get("/?relevance_min=abc&days=x&page=zz").status_code == 200
+
+
+def test_detail_page(client):
+    r = client.get("/news/1")
+    assert r.status_code == 200 and "Justificativa estratégica" in r.text and "fake" in r.text and "porque sim" in r.text
+    assert "Ainda não analisada" in client.get("/news/4").text
+    assert client.get("/news/999").status_code == 404
+
+
+def test_html_is_escaped_and_unsafe_urls_neutralized(ctx, client):
+    with session_scope(ctx.session_factory) as s:
+        n = NewsRepository(s).get(1)
+        n.title = "<script>alert(1)</script> Docol"
+        n.url = "javascript:alert(1)"
+    html = client.get("/").text
+    assert "<script>alert(1)</script>" not in html and "&lt;script&gt;" in html
+    assert 'href="javascript:' not in html
+
+
+def test_intelligence_hides_charts_without_enough_data(client):
+    r = client.get("/intelligence")
+    assert r.status_code == 200 and "Dados insuficientes" in r.text and "<svg" not in r.text
+
+
+def test_intelligence_shows_charts_with_enough_data(ctx, client):
+    ctx.cfg.settings.ui.min_chart_sample = 3
+    try:
+        r = client.get("/intelligence?days=90")
+    finally:
+        ctx.cfg.settings.ui.min_chart_sample = 10
+    assert "Docol" in r.text and 'class="bars"' in r.text and "<svg" in r.text

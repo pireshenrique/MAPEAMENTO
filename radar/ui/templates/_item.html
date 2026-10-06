@@ -1,0 +1,13 @@
+{% set a = n.analysis %}
+<article class="item {{ 'r' ~ a.relevance_score if a }}">
+  <span class="chip">{{ n.competitor.name }}</span>
+  {% if a %}<span class="badge">{{ a.category }}</span>
+  <span class="badge rel rel{{ a.relevance_score }}" title="Relevância competitiva">Relevância {{ a.relevance_score }}/5 · {{ RELEVANCE_LABEL[a.relevance_score] }}</span>
+  <span class="badge {{ {'negative':'b-neg','positive':'b-pos','neutral':'b-neu'}[a.competitive_impact] }}" title="Sob a ótica da Lorenzetti: {{ IMPACT_HINT[a.competitive_impact] }}">Impacto {{ IMPACT_LABEL[a.competitive_impact] }}</span>
+  {% else %}<span class="badge">{{ 'Análise falhou' if n.analysis_status == 'failed' else 'Aguardando análise' }}</span>{% endif %}
+  {% if n.dup_status == 'possible_duplicate' %}<span class="badge" title="Semelhante a outra notícia (#{{ n.dup_of_id }})">Possível duplicata</span>{% endif %}
+  <h3><a href="/news/{{ n.id }}">{{ n.title }}</a></h3>
+  <div class="meta">{{ n.source_name or n.source_domain or 'Fonte desconhecida' }} · {{ fmt_dt(n.published_at) }}
+    · <a href="{{ safe_url(n.url) }}" target="_blank" rel="noopener noreferrer">Original ↗</a></div>
+  <p class="sum">{{ a.summary if a else (n.description or '') }}</p>
+</article>
