@@ -1,0 +1,17 @@
+dominio,acessivel,robots,feeds,sitemaps,newsroom,erros
+deca.com.br,True,ok,,https://www.deca.com.br/sitemap_index.xml,https://deca.com.br/blog,
+www.deca.com.br,True,ok,,https://www.deca.com.br/sitemap_index.xml,https://www.deca.com.br/blog,
+docol.com.br,False,bloqueado/indisponível,,,,https://docol.com.br/: robots.txt não permite (ou não pôde ser lido) para https://docol.com.br/
+www.docol.com.br,True,ok,,https://www.docol.com.br/sitemap.xml,https://www.docol.com.br/imprensa | https://www.docol.com.br/sala-de-imprensa | https://www.docol.com.br/noticias | https://www.docol.com.br/blog | https://www.docol.com.br/newsroom | https://www.docol.com.br/press | https://www.docol.com.br/ri | https://www.docol.com.br/investidores,
+tigre.com.br,True,ok,,https://www.tigre.com.br/sitemap_index.xml | https://tigre.com.br/sitemap.xml,,
+www.tigre.com.br,True,ok,,https://www.tigre.com.br/sitemap_index.xml | https://www.tigre.com.br/sitemap.xml,,
+ri.tigre.com.br,True,ok,https://ri.tigre.com.br/feed | https://ri.tigre.com.br/feed/ | https://ri.tigre.com.br/rss,/sitemap_index.xml | https://ri.tigre.com.br/sitemap.xml,https://ri.tigre.com.br/noticias,
+br.roca.com,False,bloqueado/indisponível,,,,https://br.roca.com/: robots.txt não permite (ou não pôde ser lido) para https://br.roca.com/
+celite.com.br,True,ok,,http://dev.celite.com.br:80/sitemap.xml,https://celite.com.br/blog,
+www.celite.com.br,True,ok,,http://dev.celite.com.br:80/sitemap.xml,https://www.celite.com.br/blog,
+br.kohler.com,True,ok,,https://br.kohler.com/sitemap.xml,https://br.kohler.com/imprensa | https://br.kohler.com/sala-de-imprensa | https://br.kohler.com/noticias | https://br.kohler.com/blog | https://br.kohler.com/newsroom | https://br.kohler.com/press | https://br.kohler.com/ri | https://br.kohler.com/investidores,
+kohler.com,False,bloqueado/indisponível,,,,https://kohler.com/: robots.txt não permite (ou não pôde ser lido) para https://kohler.com/
+dex.co,True,ok,,https://www.dex.co/sitemap_index.xml,https://dex.co/imprensa | https://dex.co/noticias | https://dex.co/press,https://dex.co/feed: HTTP 500 em https://dex.co/feed | https://dex.co/feed/: HTTP 500 em https://dex.co/feed/ | https://dex.co/rss: HTTP 500 em https://dex.co/rss
+www.dex.co,True,ok,,https://www.dex.co/sitemap_index.xml | https://www.dex.co/sitemap.xml,https://www.dex.co/imprensa | https://www.dex.co/noticias | https://www.dex.co/press,https://www.dex.co/feed: HTTP 500 em https://www.dex.co/feed | https://www.dex.co/feed/: HTTP 500 em https://www.dex.co/feed/ | https://www.dex.co/rss: HTTP 500 em https://www.dex.co/rss
+ri.dex.co,True,ok,,https://ri.dex.co/sitemap_index.xml | https://ri.dex.co/sitemap.xml,,
+dados.cvm.gov.br,True,ok,,,https://dados.cvm.gov.br/blog,

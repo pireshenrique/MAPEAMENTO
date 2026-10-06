@@ -1,0 +1,213 @@
+{
+ "sitemaps": [
+  {
+   "url": "https://www.dex.co/post-sitemap.xml",
+   "http": 200,
+   "urls": 638,
+   "selecionadas": 638,
+   "lastmod_max": "2026-01-13T15:51:46+00:00",
+   "lastmod_min": "2022-11-23T19:51:19+00:00",
+   "amostra": [
+    "https://www.dex.co/noticias/",
+    "https://www.dex.co/noticias/duratex-e-uma-das-lideres-mundiais-em-ranking-de-compromissos-esg-do-setor-florestal/",
+    "https://www.dex.co/noticias/dexco-reforca-compromisso-com-atuacao-consciente-e-fortalece-os-pilares-ambiental-social-e-de-governanca/",
+    "https://www.dex.co/noticias/duratex-agora-e-dexco-e-inicia-um-novo-ciclo-de-crescimento/",
+    "https://www.dex.co/noticias/com-inovacoes-que-aquecem-a-vida-e-design-para-ver-e-viver-marcas-dexco-surpreendem-agregando-beleza-a-funcionalidade/"
+   ]
+  },
+  {
+   "url": "https://ri.dex.co/page-sitemap.xml",
+   "http": 200,
+   "urls": 65,
+   "selecionadas": 4,
+   "lastmod_max": "2026-10-01T14:00:26+00:00",
+   "lastmod_min": "2021-08-23T18:52:41+00:00",
+   "amostra": [
+    "https://ri.dex.co/informacoes-ao-mercado/comunicado-e-fatos-relevantes/",
+    "https://ri.dex.co/informacoes-ao-mercado/comunicado-e-fatos-relevantes/",
+    "https://ri.dex.co/informacoes-ao-mercado/central-de-resultados/",
+    "https://ri.dex.co/informacoes-ao-mercado/central-de-resultados/"
+   ]
+  },
+  {
+   "url": "https://ri.tigre.com.br/post-sitemap.xml",
+   "http": 200,
+   "urls": 1,
+   "selecionadas": 1,
+   "lastmod_max": "2021-08-18T15:29:35+00:00",
+   "lastmod_min": "2021-08-18T15:29:35+00:00",
+   "amostra": [
+    "https://ri.tigre.com.br/2021/08/18/ola-mundo/"
+   ]
+  },
+  {
+   "url": "https://www.tigre.com.br/medias-posts-sitemap.xml",
+   "http": 200,
+   "urls": 45,
+   "selecionadas": 45,
+   "lastmod_max": "2026-08-03",
+   "lastmod_min": "2021-12-15",
+   "amostra": [
+    "https://www.tigre.com.br/tigre-na-midia/adnews-tigre-lanca-campanha-no-instagram-para-diferenciar-marca-de-famoso-jogo-de-azar",
+    "https://www.tigre.com.br/tigre-na-midia/advent-international-anuncia-investimento-estrategico-no-grupo-tigre",
+    "https://www.tigre.com.br/tigre-na-midia/agfeed-tigre-irriga-seus-negocios-no-campo-para-crescer-25-no-agro-nos-proximos-dois-anos",
+    "https://www.tigre.com.br/tigre-na-midia/boas-praticas-rh-do-grupo-tigre-cria-day-off",
+    "https://www.tigre.com.br/tigre-na-midia/cidade-das-aguas-da-nome-ao-futuro-bairro-inteligente-de-joinville"
+   ]
+  },
+  {
+   "url": "https://www.deca.com.br/sitemap-blog.xml",
+   "http": 200,
+   "urls": 263,
+   "selecionadas": 263,
+   "lastmod_max": "2026-10-06T20:01:09.856Z",
+   "lastmod_min": "2026-10-06T20:01:09.855Z",
+   "amostra": [
+    "https://www.deca.com.br/blog/kit-de-acessorios-para-banheiro-itens-essenciais-para-um-ambiente-funcional",
+    "https://www.deca.com.br/blog/decoracao-classica-para-cozinha-caracteristicas-e-dicas-para-criar-esse-estilo",
+    "https://www.deca.com.br/blog/cuba-de-concreto-vantagens-e-opcoes-para-banheiros-e-lavabos"
+   ]
+  }
+ ],
+ "feeds": [
+  {
+   "url": "https://www.dex.co/noticias/feed/",
+   "http": 500,
+   "final": "https://www.dex.co/noticias/feed/",
+   "ctype": "text/xml; charset=UTF-8",
+   "versao": "",
+   "itens": 0,
+   "mais_recente": null,
+   "guid": [],
+   "corpo": [],
+   "ex": []
+  },
+  {
+   "url": "https://www.dex.co/category/noticias/feed/",
+   "http": 404,
+   "final": "https://www.dex.co/category/noticias/feed/",
+   "ctype": "text/html; charset=UTF-8",
+   "versao": "",
+   "itens": 0,
+   "mais_recente": null,
+   "guid": [],
+   "corpo": [],
+   "ex": []
+  },
+  {
+   "url": "https://www.dex.co/?feed=rss2",
+   "http": 500,
+   "final": "https://www.dex.co/feed/",
+   "ctype": "text/xml; charset=UTF-8",
+   "versao": "",
+   "itens": 0,
+   "mais_recente": null,
+   "guid": [],
+   "corpo": [],
+   "ex": []
+  },
+  {
+   "url": "https://ri.dex.co/feed/",
+   "http": 200,
+   "final": "https://ri.dex.co/feed/",
+   "ctype": "application/rss+xml; charset=U",
+   "versao": "",
+   "itens": 0,
+   "mais_recente": null,
+   "guid": [],
+   "corpo": [],
+   "ex": []
+  },
+  {
+   "url": "https://www.deca.com.br/blog/feed/",
+   "http": 500,
+   "final": "https://www.deca.com.br/blog/feed",
+   "ctype": "text/html; charset=utf-8",
+   "versao": "",
+   "itens": 0,
+   "mais_recente": null,
+   "guid": [],
+   "corpo": [],
+   "ex": []
+  },
+  {
+   "url": "https://www.celite.com.br/blog/feed",
+   "http": 404,
+   "final": "https://www.celite.com.br/blog/feed",
+   "ctype": "text/html; charset=UTF-8",
+   "versao": "",
+   "itens": 0,
+   "mais_recente": null,
+   "guid": [],
+   "corpo": [],
+   "ex": []
+  },
+  {
+   "url": "https://www.docol.com.br/blog/feed",
+   "http": 200,
+   "final": "https://www.docol.com.br/en/blog/feed",
+   "ctype": "text/html; charset=utf-8",
+   "versao": "",
+   "itens": 0,
+   "mais_recente": null,
+   "guid": [],
+   "corpo": [],
+   "ex": []
+  }
+ ],
+ "wp_json_dex": {
+  "http": 401,
+  "ctype": "application/json; charset=UTF-",
+  "corpo": "{\"code\":\"no_rest_api_sorry\",\"message\":\"REST API not allowed\",\"data\":{\"status\":401}}"
+ },
+ "robots": {
+  "www.dex.co": {
+   "http": 200,
+   "disallow_count": 1,
+   "tem_sitemap": true,
+   "bloqueia_tudo": false
+  },
+  "ri.dex.co": {
+   "http": 200,
+   "disallow_count": 3,
+   "tem_sitemap": true,
+   "bloqueia_tudo": false
+  },
+  "www.deca.com.br": {
+   "http": 200,
+   "disallow_count": 9,
+   "tem_sitemap": true,
+   "bloqueia_tudo": false
+  },
+  "www.docol.com.br": {
+   "http": 200,
+   "disallow_count": 0,
+   "tem_sitemap": true,
+   "bloqueia_tudo": false
+  },
+  "br.kohler.com": {
+   "http": 200,
+   "disallow_count": 0,
+   "tem_sitemap": true,
+   "bloqueia_tudo": false
+  },
+  "www.celite.com.br": {
+   "http": 200,
+   "disallow_count": 1,
+   "tem_sitemap": true,
+   "bloqueia_tudo": false
+  },
+  "ri.tigre.com.br": {
+   "http": 200,
+   "disallow_count": 3,
+   "tem_sitemap": true,
+   "bloqueia_tudo": false
+  },
+  "dados.cvm.gov.br": {
+   "http": 200,
+   "disallow_count": 4,
+   "tem_sitemap": false,
+   "bloqueia_tudo": false
+  }
+ }
+}

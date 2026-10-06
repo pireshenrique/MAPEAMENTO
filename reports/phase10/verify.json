@@ -1,0 +1,475 @@
+{
+ "feeds": {
+  "https://ri.tigre.com.br/feed": {
+   "http": 200,
+   "final": "https://ri.tigre.com.br/feed/",
+   "ctype": "application/rss+xml; charset=UTF-8",
+   "versao": "rss20",
+   "titulo_feed": "Tigre RI",
+   "itens": 1,
+   "mais_recente": "2021-08-18T15:29:35+00:00",
+   "mais_antigo": "2021-08-18T15:29:35+00:00",
+   "guid": [
+    "http://tigre.cms-backend.mziq.com/?p=1"
+   ],
+   "corpo_completo": [
+    true
+   ],
+   "exemplos": [
+    [
+     "Olá, mundo!",
+     "https://ri.tigre.com.br/2021/08/18/ola-mundo/?utm_source=rss&utm_medium=rss&utm_campaign=ola-mundo"
+    ]
+   ],
+   "etag": "\"037f118153a101bc661477306fd2bc1c-gzip\"",
+   "last_modified": "Wed, 22 Oct 2025 02:12:04 GMT"
+  },
+  "https://ri.tigre.com.br/feed/": {
+   "http": 200,
+   "final": "https://ri.tigre.com.br/feed/",
+   "ctype": "application/rss+xml; charset=UTF-8",
+   "versao": "rss20",
+   "titulo_feed": "Tigre RI",
+   "itens": 1,
+   "mais_recente": "2021-08-18T15:29:35+00:00",
+   "mais_antigo": "2021-08-18T15:29:35+00:00",
+   "guid": [
+    "http://tigre.cms-backend.mziq.com/?p=1"
+   ],
+   "corpo_completo": [
+    true
+   ],
+   "exemplos": [
+    [
+     "Olá, mundo!",
+     "https://ri.tigre.com.br/2021/08/18/ola-mundo/?utm_source=rss&utm_medium=rss&utm_campaign=ola-mundo"
+    ]
+   ],
+   "etag": "\"037f118153a101bc661477306fd2bc1c-gzip\"",
+   "last_modified": "Wed, 22 Oct 2025 02:12:04 GMT"
+  },
+  "https://ri.tigre.com.br/rss": {
+   "http": 200,
+   "final": "https://ri.tigre.com.br/feed/",
+   "ctype": "application/rss+xml; charset=UTF-8",
+   "versao": "rss20",
+   "titulo_feed": "Tigre RI",
+   "itens": 1,
+   "mais_recente": "2021-08-18T15:29:35+00:00",
+   "mais_antigo": "2021-08-18T15:29:35+00:00",
+   "guid": [
+    "http://tigre.cms-backend.mziq.com/?p=1"
+   ],
+   "corpo_completo": [
+    true
+   ],
+   "exemplos": [
+    [
+     "Olá, mundo!",
+     "https://ri.tigre.com.br/2021/08/18/ola-mundo/?utm_source=rss&utm_medium=rss&utm_campaign=ola-mundo"
+    ]
+   ],
+   "etag": "\"037f118153a101bc661477306fd2bc1c-gzip\"",
+   "last_modified": "Wed, 22 Oct 2025 02:12:04 GMT"
+  }
+ },
+ "sitemaps": {
+  "https://www.deca.com.br/sitemap_index.xml": {
+   "url": "https://www.deca.com.br/sitemap_index.xml",
+   "http": 200,
+   "final": "https://www.deca.com.br/sitemap_index.xml",
+   "tipo": "index",
+   "locs": 6,
+   "lastmod_max": null,
+   "filhos": [
+    "https://www.deca.com.br/sitemap-base.xml",
+    "https://www.deca.com.br/sitemap-produtos.xml",
+    "https://www.deca.com.br/sitemap-categorias.xml",
+    "https://www.deca.com.br/sitemap-ambientes.xml",
+    "https://www.deca.com.br/sitemap-blog.xml",
+    "https://www.deca.com.br/sitemap-inspiracoes.xml"
+   ]
+  },
+  "https://www.docol.com.br/sitemap.xml": {
+   "url": "https://www.docol.com.br/sitemap.xml",
+   "http": 200,
+   "final": "https://www.docol.com.br/sitemap.xml",
+   "tipo": "index",
+   "locs": 6,
+   "lastmod_max": "2026-10-04T10:31:56.628Z",
+   "filhos": [
+    "https://www.docol.com.br/sitemap/appsRoutes-0.xml",
+    "https://www.docol.com.br/sitemap/category-0.xml",
+    "https://www.docol.com.br/sitemap/userRoute-0.xml",
+    "https://www.docol.com.br/sitemap/subcategory-0.xml",
+    "https://www.docol.com.br/sitemap/department-0.xml",
+    "https://www.docol.com.br/sitemap/brand-0.xml"
+   ]
+  },
+  "https://www.tigre.com.br/sitemap_index.xml": {
+   "url": "https://www.tigre.com.br/sitemap_index.xml",
+   "http": 200,
+   "final": "https://www.tigre.com.br/sitemap_index.xml",
+   "tipo": "index",
+   "locs": 6,
+   "lastmod_max": null,
+   "filhos": [
+    "https://www.tigre.com.br/pages-sitemap.xml",
+    "https://www.tigre.com.br/products-sitemap.xml",
+    "https://www.tigre.com.br/products-categories-sitemap.xml",
+    "https://www.tigre.com.br/catalogs-categories-sitemap.xml",
+    "https://www.tigre.com.br/medias-categories-sitemap.xml",
+    "https://www.tigre.com.br/medias-posts-sitemap.xml"
+   ]
+  },
+  "https://ri.tigre.com.br/sitemap_index.xml": {
+   "url": "https://ri.tigre.com.br/sitemap_index.xml",
+   "http": 200,
+   "final": "https://ri.tigre.com.br/sitemap_index.xml",
+   "tipo": "index",
+   "locs": 5,
+   "lastmod_max": "2025-10-22T02:12:04+00:00",
+   "filhos": [
+    "https://ri.tigre.com.br/post-sitemap.xml",
+    "https://ri.tigre.com.br/page-sitemap.xml",
+    "https://ri.tigre.com.br/timeline-sitemap.xml",
+    "https://ri.tigre.com.br/category-sitemap.xml",
+    "https://ri.tigre.com.br/author-sitemap.xml"
+   ]
+  },
+  "http://dev.celite.com.br:80/sitemap.xml": {
+   "url": "http://dev.celite.com.br:80/sitemap.xml",
+   "http": 403,
+   "final": "http://dev.celite.com.br/sitemap.xml",
+   "tipo": "outro",
+   "locs": 0,
+   "lastmod_max": null,
+   "amostra_noticia": [],
+   "total_urls_noticia": 0
+  },
+  "https://www.celite.com.br/sitemap.xml": {
+   "url": "https://www.celite.com.br/sitemap.xml",
+   "http": 200,
+   "final": "https://www.celite.com.br/sitemap.xml",
+   "tipo": "urlset",
+   "locs": 761,
+   "lastmod_max": "2026-07-28",
+   "amostra_noticia": [
+    "https://www.celite.com.br/blog",
+    "https://www.celite.com.br/colecoes/espacos-publicos/ecopress",
+    "https://www.celite.com.br/blog/projeto_banheiro_contemporaneo",
+    "https://www.celite.com.br/blog/vasosanitario_cubas_de_bordas_finas_celite",
+    "https://www.celite.com.br/sobre-celite/noticias"
+   ],
+   "total_urls_noticia": 6
+  },
+  "https://br.kohler.com/sitemap.xml": {
+   "url": "https://br.kohler.com/sitemap.xml",
+   "http": 200,
+   "final": "https://br.kohler.com/sitemap.xml",
+   "tipo": "urlset",
+   "locs": 634,
+   "lastmod_max": "2026-10-06",
+   "amostra_noticia": [],
+   "total_urls_noticia": 0
+  },
+  "https://www.dex.co/sitemap_index.xml": {
+   "url": "https://www.dex.co/sitemap_index.xml",
+   "http": 200,
+   "final": "https://www.dex.co/sitemap_index.xml",
+   "tipo": "index",
+   "locs": 4,
+   "lastmod_max": "2026-10-06T12:59:47+00:00",
+   "filhos": [
+    "https://www.dex.co/post-sitemap.xml",
+    "https://www.dex.co/page-sitemap.xml",
+    "https://www.dex.co/category-sitemap.xml",
+    "https://www.dex.co/author-sitemap.xml"
+   ]
+  },
+  "https://ri.dex.co/sitemap_index.xml": {
+   "url": "https://ri.dex.co/sitemap_index.xml",
+   "http": 200,
+   "final": "https://ri.dex.co/sitemap_index.xml",
+   "tipo": "index",
+   "locs": 4,
+   "lastmod_max": "2026-10-01T14:00:26+00:00",
+   "filhos": [
+    "https://ri.dex.co/page-sitemap.xml",
+    "https://ri.dex.co/videos-sitemap.xml",
+    "https://ri.dex.co/mapa-sitemap.xml",
+    "https://ri.dex.co/category_videos-sitemap.xml"
+   ]
+  }
+ },
+ "paginas": {
+  "https://www.docol.com.br": [
+   {
+    "url": "https://www.docol.com.br/",
+    "http": 200,
+    "final": "https://www.docol.com.br/en/",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 633795,
+    "title": null,
+    "sha": "c7affdbc"
+   },
+   {
+    "url": "https://www.docol.com.br/imprensa",
+    "http": 200,
+    "final": "https://www.docol.com.br/en/imprensa",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 811033,
+    "title": null,
+    "sha": "64d47f6b"
+   },
+   {
+    "url": "https://www.docol.com.br/noticias",
+    "http": 200,
+    "final": "https://www.docol.com.br/en/noticias",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 811030,
+    "title": null,
+    "sha": "64d47f6b"
+   },
+   {
+    "url": "https://www.docol.com.br/blog",
+    "http": 200,
+    "final": "https://www.docol.com.br/en/blog",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 490386,
+    "title": null,
+    "sha": "de4a3d9b"
+   },
+   {
+    "url": "https://www.docol.com.br/zz-nao-existe-9x7",
+    "http": 200,
+    "final": "https://www.docol.com.br/en/zz-nao-existe-9x7",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 811693,
+    "title": null,
+    "sha": "64d47f6b"
+   }
+  ],
+  "https://br.kohler.com": [
+   {
+    "url": "https://br.kohler.com/",
+    "http": 200,
+    "final": "https://br.kohler.com/",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 829189,
+    "title": "KOHLER Brasil | Banho e Produtos de Cozinha | KOHLER",
+    "sha": "a7367fe5"
+   },
+   {
+    "url": "https://br.kohler.com/imprensa",
+    "http": 200,
+    "final": "https://br.kohler.com/imprensa",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 9501,
+    "title": "",
+    "sha": "a07bb8f3"
+   },
+   {
+    "url": "https://br.kohler.com/noticias",
+    "http": 200,
+    "final": "https://br.kohler.com/noticias",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 9501,
+    "title": "",
+    "sha": "a07bb8f3"
+   },
+   {
+    "url": "https://br.kohler.com/blog",
+    "http": 200,
+    "final": "https://br.kohler.com/blog",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 9501,
+    "title": "",
+    "sha": "a07bb8f3"
+   },
+   {
+    "url": "https://br.kohler.com/zz-nao-existe-9x7",
+    "http": 200,
+    "final": "https://br.kohler.com/zz-nao-existe-9x7",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 9501,
+    "title": "",
+    "sha": "a07bb8f3"
+   }
+  ],
+  "https://www.deca.com.br": [
+   {
+    "url": "https://www.deca.com.br/",
+    "http": 200,
+    "final": "https://www.deca.com.br/",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 227457,
+    "title": "Deca - Louças e Metais para Banheiro, Cozinha e muito mais",
+    "sha": "c84a289e"
+   },
+   {
+    "url": "https://www.deca.com.br/blog",
+    "http": 200,
+    "final": "https://www.deca.com.br/blog",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 453058,
+    "title": "Deca - Louças e metais para banheiros, cozinha e área de serviço",
+    "sha": "babd9d31"
+   },
+   {
+    "url": "https://www.deca.com.br/zz-nao-existe-9x7",
+    "http": 404,
+    "final": "https://www.deca.com.br/zz-nao-existe-9x7",
+    "ctype": "text/html; charset=utf-8",
+    "bytes": 77597,
+    "title": null,
+    "sha": "0fe7d48f"
+   }
+  ],
+  "https://www.celite.com.br": [
+   {
+    "url": "https://www.celite.com.br/",
+    "http": 200,
+    "final": "https://www.celite.com.br/",
+    "ctype": "text/html;charset=utf-8",
+    "bytes": 255772,
+    "title": "Home | Celite",
+    "sha": "9e3f8d28"
+   },
+   {
+    "url": "https://www.celite.com.br/blog",
+    "http": 200,
+    "final": "https://www.celite.com.br/blog",
+    "ctype": "text/html;charset=utf-8",
+    "bytes": 132969,
+    "title": "Blog | Celite",
+    "sha": "f6725844"
+   },
+   {
+    "url": "https://www.celite.com.br/zz-nao-existe-9x7",
+    "http": 404,
+    "final": "https://www.celite.com.br/zz-nao-existe-9x7",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 252,
+    "title": "",
+    "sha": "169a4744"
+   }
+  ],
+  "https://www.dex.co": [
+   {
+    "url": "https://www.dex.co/",
+    "http": 200,
+    "final": "https://www.dex.co/",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 161848,
+    "title": "Dexco",
+    "sha": "30d7d305"
+   },
+   {
+    "url": "https://www.dex.co/imprensa",
+    "http": 200,
+    "final": "https://www.dex.co/imprensa/",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 139502,
+    "title": "Imprensa - Dexco",
+    "sha": "d2f1cf5f"
+   },
+   {
+    "url": "https://www.dex.co/noticias",
+    "http": 200,
+    "final": "https://www.dex.co/noticias/",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 1157484,
+    "title": "Notícias - Dexco",
+    "sha": "28cded1a"
+   },
+   {
+    "url": "https://www.dex.co/press",
+    "http": 200,
+    "final": "https://www.dex.co/en/press/",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 138423,
+    "title": "Press - Dexco",
+    "sha": "26e471e3"
+   },
+   {
+    "url": "https://www.dex.co/zz-nao-existe-9x7",
+    "http": 404,
+    "final": "https://www.dex.co/zz-nao-existe-9x7",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 135982,
+    "title": "Página não encontrada - Dexco",
+    "sha": "33d290bf"
+   }
+  ],
+  "https://ri.tigre.com.br": [
+   {
+    "url": "https://ri.tigre.com.br/",
+    "http": 200,
+    "final": "https://ri.tigre.com.br/",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 54166,
+    "title": "Home - Tigre RI",
+    "sha": "13ac4c48"
+   },
+   {
+    "url": "https://ri.tigre.com.br/noticias",
+    "http": 200,
+    "final": "https://ri.tigre.com.br/noticias/",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 54003,
+    "title": "Notícias - Tigre RI",
+    "sha": "d6271544"
+   },
+   {
+    "url": "https://ri.tigre.com.br/zz-nao-existe-9x7",
+    "http": 404,
+    "final": "https://ri.tigre.com.br/zz-nao-existe-9x7",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 48980,
+    "title": "Página não encontrada - Tigre RI",
+    "sha": "1b96a1f0"
+   }
+  ],
+  "https://www.tigre.com.br": [
+   {
+    "url": "https://www.tigre.com.br/",
+    "http": 200,
+    "final": "https://www.tigre.com.br/",
+    "ctype": "text/html;charset=utf-8",
+    "bytes": 1036865,
+    "title": "Tigre Brasil",
+    "sha": "3ea8d950"
+   },
+   {
+    "url": "https://www.tigre.com.br/zz-nao-existe-9x7",
+    "http": 404,
+    "final": "https://www.tigre.com.br/zz-nao-existe-9x7",
+    "ctype": "text/html;charset=utf-8",
+    "bytes": 764940,
+    "title": "Página não encontrada",
+    "sha": "2e13574a"
+   }
+  ],
+  "https://ri.dex.co": [
+   {
+    "url": "https://ri.dex.co/",
+    "http": 200,
+    "final": "https://ri.dex.co/",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 86400,
+    "title": "Home - Dexco RI",
+    "sha": "cf328a5b"
+   },
+   {
+    "url": "https://ri.dex.co/zz-nao-existe-9x7",
+    "http": 404,
+    "final": "https://ri.dex.co/zz-nao-existe-9x7",
+    "ctype": "text/html; charset=UTF-8",
+    "bytes": 61399,
+    "title": "Página não encontrada - Dexco RI",
+    "sha": "ddcd1220"
+   }
+  ]
+ }
+}
