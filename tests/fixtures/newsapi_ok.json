@@ -1,0 +1,71 @@
+{
+ "status": "ok",
+ "totalResults": 5,
+ "articles": [
+  {
+   "source": {
+    "id": null,
+    "name": "Valor Econômico"
+   },
+   "author": "Redação",
+   "title": "Docol lança nova linha de metais sanitários no Brasil - Valor Econômico",
+   "description": "A <b>Docol</b> anunciou a nova linha de torneiras para banheiro.",
+   "url": "https://www.valor.com.br/empresas/docol-linha?utm_source=x&utm_medium=y#top",
+   "urlToImage": "https://img/x.jpg",
+   "publishedAt": "2026-10-05T10:00:00Z",
+   "content": "A Docol anunciou ... [+1200 chars]"
+  },
+  {
+   "source": {
+    "id": null,
+    "name": "Exame"
+   },
+   "author": null,
+   "title": "Roca amplia fábrica de louças sanitárias em Pernambuco",
+   "description": "Investimento da Roca em louças e banheiros.",
+   "url": "https://exame.com/negocios/roca-fabrica/",
+   "urlToImage": null,
+   "publishedAt": "2026-10-04T09:30:00Z",
+   "content": null
+  },
+  {
+   "source": {
+    "id": null,
+    "name": "Esporte Total"
+   },
+   "author": null,
+   "title": "Tigre vence campeonato e garante vaga na final",
+   "description": "Time de futebol venceu o jogo.",
+   "url": "https://esportetotal.com.br/tigre-final",
+   "urlToImage": null,
+   "publishedAt": "2026-10-04T08:00:00Z",
+   "content": null
+  },
+  {
+   "source": {
+    "id": null,
+    "name": "Folha"
+   },
+   "author": null,
+   "title": "[Removed]",
+   "description": "[Removed]",
+   "url": "https://removed.com",
+   "urlToImage": null,
+   "publishedAt": "2026-10-04T08:00:00Z",
+   "content": "[Removed]"
+  },
+  {
+   "source": {
+    "id": null,
+    "name": "Blog X"
+   },
+   "author": null,
+   "title": "Tigre lança tubos e conexões para construção civil",
+   "description": "Tigre apresenta novidade hidráulica.",
+   "url": "https://blogx.com/tigre-tubos",
+   "urlToImage": null,
+   "publishedAt": "not-a-date",
+   "content": null
+  }
+ ]
+}
