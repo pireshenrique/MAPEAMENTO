@@ -1,0 +1,154 @@
+[
+ {
+  "label": "Deca",
+  "q": "\"Deca\"",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 4,
+  "returned": 4
+ },
+ {
+  "label": "Deca",
+  "q": "\"Deca\" AND (banheiro OR louça OR metais OR sanitário)",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 1,
+  "returned": 1
+ },
+ {
+  "label": "Deca",
+  "q": "\"Deca\" Dexco",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 1,
+  "returned": 1
+ },
+ {
+  "label": "Roca",
+  "q": "\"Roca\"",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 26,
+  "returned": 26
+ },
+ {
+  "label": "Roca",
+  "q": "\"Roca\" AND (banheiro OR louças OR sanitários)",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 3,
+  "returned": 3
+ },
+ {
+  "label": "Celite",
+  "q": "Celite",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 0,
+  "returned": 0
+ },
+ {
+  "label": "Docol",
+  "q": "Docol",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 1,
+  "returned": 1
+ },
+ {
+  "label": "Tigre",
+  "q": "\"Tigre\"",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 96,
+  "returned": 29
+ },
+ {
+  "label": "Tigre",
+  "q": "\"Tigre\" AND (tubos OR conexões OR hidráulica OR construção)",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 8,
+  "returned": 8
+ },
+ {
+  "label": "Kohler",
+  "q": "Kohler",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 5,
+  "returned": 5
+ },
+ {
+  "label": "Dexco",
+  "q": "Dexco",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 6,
+  "returned": 6
+ },
+ {
+  "label": "Dexco",
+  "q": "Duratex",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 2,
+  "returned": 2
+ },
+ {
+  "label": "setor",
+  "q": "\"louças sanitárias\"",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 2,
+  "returned": 2
+ },
+ {
+  "label": "setor",
+  "q": "\"metais sanitários\"",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 2,
+  "returned": 2
+ },
+ {
+  "label": "setor",
+  "q": "\"material de construção\" AND (Deca OR Docol OR Roca OR Tigre OR Dexco OR Celite OR Kohler)",
+  "lang": "pt",
+  "http": 200,
+  "totalResults": 0,
+  "returned": 0
+ },
+ {
+  "label": "sem-idioma",
+  "q": "Docol",
+  "lang": "",
+  "http": 200,
+  "totalResults": 1,
+  "returned": 1
+ },
+ {
+  "label": "sem-idioma",
+  "q": "Dexco",
+  "lang": "",
+  "http": 200,
+  "totalResults": 6,
+  "returned": 6
+ },
+ {
+  "label": "sem-idioma",
+  "q": "Kohler bathroom OR Kohler Brasil",
+  "lang": "",
+  "http": 200,
+  "totalResults": 1,
+  "returned": 1
+ },
+ {
+  "label": "sem-idioma",
+  "q": "Celite",
+  "lang": "",
+  "http": 200,
+  "totalResults": 0,
+  "returned": 0
+ }
+]

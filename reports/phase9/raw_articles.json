@@ -1,0 +1,23 @@
+{
+ "Deca": [],
+ "Roca": [],
+ "Celite": [],
+ "Docol": [],
+ "Tigre": [],
+ "Kohler": [],
+ "Dexco": [
+  {
+   "source_collector": "newsapi",
+   "external_id": null,
+   "title": "Mercado revisa apostas com Flávio à frente de Lula; veja as ações que ganham espaço",
+   "description": "Petrobras e Cosan têm preço-alvo elevado, XP e Nubank viram as preferidas para juros em queda, e Axia e Itaú perdem peso\nThe post Mercado revisa apostas com Flávio à frente de Lula; veja as ações que ganham espaço appeared first on InfoMoney.",
+   "url": "https://www.infomoney.com.br/mercados/mercado-revisa-apostas-com-flavio-a-frente-de-lula-veja-as-acoes-que-ganham-espaco/",
+   "source_name": "InfoMoney",
+   "author": "Paulo Barros",
+   "published_at": "2026-10-05T14:43:08Z",
+   "image_url": "https://www.infomoney.com.br/wp-content/uploads/2021/11/DSC_2877.jpg",
+   "content": "Depois do primeiro turno, em que Flávio Bolsonaro (PL) terminou à frente de Lula (PT), por 47,03% a 45,16% dos votos válidos, os bancos começaram a revisar carteiras e projeções já nesta segunda-feir… [+4553 chars]",
+   "query": "(\"Dexco\" OR \"Duratex\")"
+  }
+ ]
+}
