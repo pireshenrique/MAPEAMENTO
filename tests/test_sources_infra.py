@@ -34,11 +34,12 @@ APPROVED_CATEGORIES = ["Fato Relevante", "Comunicado ao Mercado", "Aviso aos Aci
                        "Assembleia", "Comunicação sobre Transação entre Partes Relacionadas", "Dados Econômico-Financeiros"]
 
 
-def test_only_cvm_dexco_is_enabled_and_verified(config):
+def test_only_pilot_sources_are_enabled_and_verified(config):
     ids = {s.id for s in config.sources}
     assert {"newsapi", "cvm-dexco", "infomoney"} <= ids
-    assert [s.id for s in config.sources if s.enabled] == ["cvm-dexco"]       # nenhuma outra fonte habilitada
-    assert [s.id for s in config.sources if s.verified] == ["cvm-dexco"]
+    pilot = {"cvm-dexco", "braziljournal", "neofeed", "seudinheiro"}           # piloto de 7 dias (Fase 10)
+    assert {s.id for s in config.sources if s.enabled} == pilot                # nenhuma outra fonte habilitada
+    assert {s.id for s in config.sources if s.verified} == pilot
     assert {s.scope for s in config.sources if s.type == "rss"} == {"feed"}
     assert next(s for s in config.sources if s.type == "newsapi").scope == "per_competitor"
 
@@ -58,12 +59,12 @@ def test_source_config_validation():
 
 def test_registry_builds_only_enabled(config):
     cfg = config.model_copy(deep=True)
-    assert [c.source_id for c in build_collectors(cfg)] == ["cvm-dexco"]       # padrão: só a CVM
+    assert {c.source_id for c in build_collectors(cfg)} == {"cvm-dexco", "braziljournal", "neofeed", "seudinheiro"}  # padrão: piloto
     for s in cfg.sources:
         if s.id == "infomoney":
             s.enabled = True
     got = build_collectors(cfg)
-    assert {c.source_id for c in got} == {"infomoney", "cvm-dexco"} and all(isinstance(c, SourceCollector) for c in got)
+    assert {c.source_id for c in got} == {"infomoney", "cvm-dexco", "braziljournal", "neofeed", "seudinheiro"} and all(isinstance(c, SourceCollector) for c in got)
     assert all(c.scope == "feed" for c in got)
 
 
