@@ -30,8 +30,8 @@ sources:
     notes: "Fatos relevantes e comunicados (dados abertos CVM). Nome real na CVM: DEXCO S.A."
 
   - {id: infomoney, type: rss, url: "https://www.infomoney.com.br/feed/", tier: 3, notes: "negócios/mercado; candidata"}
-  - {id: braziljournal, type: rss, url: "https://braziljournal.com/feed/", tier: 3, notes: "negócios; candidata"}
+  - {id: braziljournal, type: rss, url: "https://braziljournal.com/feed/", tier: 3, enabled: true, verified: true, notes: "negócios; candidata"}
   - {id: moneytimes, type: rss, url: "https://www.moneytimes.com.br/feed/", tier: 3, notes: "mercado; candidata"}
-  - {id: neofeed, type: rss, url: "https://neofeed.com.br/feed/", tier: 3, notes: "negócios; candidata"}
-  - {id: seudinheiro, type: rss, url: "https://www.seudinheiro.com/feed/", tier: 3, notes: "mercado; candidata"}
+  - {id: neofeed, type: rss, url: "https://neofeed.com.br/feed/", tier: 3, enabled: true, verified: true, notes: "negócios; candidata"}
+  - {id: seudinheiro, type: rss, url: "https://www.seudinheiro.com/feed/", tier: 3, enabled: true, verified: true, notes: "mercado; candidata"}
   # Fontes oficiais dos concorrentes e imprensa setorial (feeds desconhecidos): preencher após a descoberta.
