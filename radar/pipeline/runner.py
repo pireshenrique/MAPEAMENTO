@@ -32,10 +32,15 @@ class CollectStats:
     discarded: Counter = field(default_factory=Counter)  # motivo -> quantidade
     errors: list[str] = field(default_factory=list)
     by_source: dict = field(default_factory=dict)   # source_id -> {seen, matched, stored}
+    source_detail: dict = field(default_factory=dict)  # source_id -> {status, errors, discarded, reasons} (relatório operacional)
 
     @property
     def discarded_total(self) -> int:
         return sum(self.discarded.values())
+
+
+def _detail(stats: CollectStats, key: str) -> dict:
+    return stats.source_detail.setdefault(key, {"status": None, "errors": [], "discarded": 0, "reasons": {}})
 
 
 def compute_since(session: Session, cfg: AppConfig, now: datetime, days: int | None = None) -> datetime:
@@ -72,6 +77,7 @@ def run_collection(session: Session, collectors: Sequence[SourceCollector], cfg:
         row = srepo.get(sid) if hasattr(collector, "load_state") else None
         if row is not None:
             collector.load_state(row.etag, row.last_modified)   # cache condicional (ETag / If-Modified-Since)
+        _detail(stats, sid)                              # toda fonte consultada fica registrada, mesmo sem itens
         targets = [None] if getattr(collector, "scope", "per_competitor") == "feed" else active_cfgs
         for comp in targets:
             label = f"{sid}/{comp.name if comp else 'feed'}"
@@ -81,6 +87,9 @@ def run_collection(session: Session, collectors: Sequence[SourceCollector], cfg:
                 msg = f"{label}: {e}"
                 log.error("erro de coleta: %s", msg)
                 stats.errors.append(msg)
+                d = _detail(stats, sid)
+                d["status"] = e.code or "error"
+                d["errors"].append(str(e)[:300])
                 srepo.record_fetch(sid, ok=False, status=e.code or "error", error=str(e), now=now)
                 session.commit()
                 if e.code in _FATAL_CODES:
@@ -88,6 +97,8 @@ def run_collection(session: Session, collectors: Sequence[SourceCollector], cfg:
                     break
                 continue
             state = getattr(collector, "last_status", "ok")
+            if _detail(stats, sid)["status"] is None:     # uma falha anterior (outro alvo da mesma fonte) prevalece
+                _detail(stats, sid)["status"] = state
             srepo.record_fetch(sid, ok=True, status=state, etag=getattr(collector, "etag", None),
                                last_modified=getattr(collector, "last_modified", None), now=now)
             stats.found += len(raws)
@@ -96,7 +107,7 @@ def run_collection(session: Session, collectors: Sequence[SourceCollector], cfg:
                 bucket = stats.by_source.setdefault(key, {"seen": 0, "matched": 0, "stored": 0})
                 bucket["seen"] += 1
                 try:
-                    _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats, bucket)
+                    _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats, bucket, _detail(stats, key))
                 except Exception as e:  # um artigo problemático não derruba o lote
                     session.rollback()
                     msg = f"erro ao processar artigo '{(raw.title or '')[:60]}': {type(e).__name__}: {e}"
@@ -110,6 +121,8 @@ def run_collection(session: Session, collectors: Sequence[SourceCollector], cfg:
     run = session.get(type(run), run.id)
     run.found, run.new, run.duplicates = stats.found, stats.new, stats.duplicates + stats.possible_duplicates
     run.discarded, run.errors = stats.discarded_total, stats.errors
+    run.by_source = {k: {"seen": 0, "matched": 0, "stored": 0, **stats.by_source.get(k, {}), **d}
+                     for k, d in stats.source_detail.items()}
     runs.finish(run)
     session.commit()
     log.info("coleta concluída: encontradas=%d novas=%d duplicadas=%d possíveis_duplicatas=%d descartadas=%d erros=%d",
@@ -119,14 +132,19 @@ def run_collection(session: Session, collectors: Sequence[SourceCollector], cfg:
     return stats
 
 
-def _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats, bucket) -> None:  # noqa: ANN001
+def _process(session, repo, dedup, raw, cfg, comp_rows, active_cfgs, now, stats, bucket, detail) -> None:  # noqa: ANN001
+    def discard(reason: str) -> None:
+        stats.discarded[reason] += 1
+        detail["discarded"] += 1
+        detail["reasons"][reason] = detail["reasons"].get(reason, 0) + 1
+
     n = normalize(raw, now)
     if (reason := validate(n, now, cfg.settings.validation, cfg.settings.collection)):
-        stats.discarded[reason] += 1
+        discard(reason)
         return
     matches = match_all(n, active_cfgs, cfg.settings.matching)
     if not matches:
-        stats.discarded["sem_concorrente"] += 1
+        discard("sem_concorrente")
         return
     bucket["matched"] += 1
     for m in matches:

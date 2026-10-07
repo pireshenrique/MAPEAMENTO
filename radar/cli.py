@@ -137,6 +137,15 @@ def sources_report(sample: Optional[Path] = typer.Option(None, help="CSV de amos
             typer.echo(f"{export_audit_sample(s, ctx.cfg, sample)} itens exportados para {sample}")
 
 
+@app.command("ops-report")
+def ops_report(days: Optional[int] = typer.Option(None, help="Janela em dias (padrão: settings.ops_report.window_days)")):
+    """Relatório operacional (somente leitura): fontes, coleta, descartes, casamentos, body_status e alertas."""
+    from radar.ops_report import build_ops_report, render_ops_report
+    ctx = _ctx()
+    with session_scope(ctx.session_factory) as s:
+        typer.echo(render_ops_report(build_ops_report(s, ctx.cfg, days=days)))
+
+
 @sources_app.command("discover")
 def sources_discover(domain: list[str] = typer.Option(None, "--domain", "-d", help="Domínio(s); padrão: concorrentes + fontes candidatas"),
                      out: Path = typer.Option(Path("reports/phase10/discovery.csv"))):

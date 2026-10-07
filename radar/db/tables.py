@@ -158,3 +158,5 @@ class CollectionRun(Base):
     analyzed: Mapped[int] = mapped_column(Integer, default=0)
     failed: Mapped[int] = mapped_column(Integer, default=0)
     errors: Mapped[list] = mapped_column(JSON, default=list)
+    # detalhe por fonte desta execução: {source_id: {status, errors, seen, discarded, reasons, matched, stored}}; NULL em execuções antigas
+    by_source: Mapped[dict | None] = mapped_column(JSON, nullable=True)

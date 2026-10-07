@@ -87,6 +87,16 @@ class SourceQualityConfig(_Strict):
     sample_size: int = 30
 
 
+class OpsReportConfig(_Strict):
+    """Limiares dos alertas do relatório operacional (docs/relatorio-diario-spec.md, seção 9)."""
+
+    window_days: int = 7                # janela do resumo por fonte e do alerta "sem casamentos"
+    stale_hours: float = 24             # sem coleta com sucesso há mais que isso => ausência de coleta
+    max_consecutive_failures: int = 3   # falhas seguidas => alerta
+    no_match_days: int = 7              # sem nenhum casamento nesse período => alerta (só com histórico suficiente)
+    min_body_items: int = 1             # amostra mínima para avaliar body_status de uma fonte
+
+
 class UIConfig(_Strict):
     page_size: int = 25
     min_chart_sample: int = 10
@@ -101,6 +111,7 @@ class AppSettings(_Strict):
     ai: AIConfig
     http: HttpConfig = HttpConfig()
     source_quality: SourceQualityConfig = SourceQualityConfig()
+    ops_report: OpsReportConfig = OpsReportConfig()
     ui: UIConfig = UIConfig()
 
 
